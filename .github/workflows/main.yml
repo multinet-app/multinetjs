@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    name: Build and test on Ubuntu - Node 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      # Build and test Multinet client app.
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      # Build and test Multinet client library.
+      - uses: actions/cache@v1
+        id: multinetjs-cache
+        with:
+          path: /home/runner/work/multinetjs/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('/home/runner/work/multinetjs/yarn.lock') }}-multinetjs-cache
+
+      - name: Install yarn packages
+        if: steps.multinetjs-cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - run: yarn build
+      - run: yarn lint
+      - run: yarn test
