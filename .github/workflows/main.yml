@@ -25,8 +25,8 @@ jobs:
       - uses: actions/cache@v1
         id: multinetjs-cache
         with:
-          path: /home/runner/work/multinetjs/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('/home/runner/work/multinetjs/yarn.lock') }}-multinetjs-cache
+          path: /home/runner/work/multinetjs/multinetjs/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('/home/runner/work/multinetjs/multinetjs/yarn.lock') }}-multinetjs-cache
 
       - name: Install yarn packages
         if: steps.multinetjs-cache.outputs.cache-hit != 'true'
