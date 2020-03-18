@@ -1,4 +1,5 @@
 import { Client } from './client';
+import { AxiosPromise } from 'axios';
 
 export interface TableRow {
   _key: string;
@@ -137,6 +138,10 @@ class MultinetAPI {
     return this.client.delete(`/workspaces/${workspace}`);
   }
 
+  public renameWorkspace(workspace: string, name: string): AxiosPromise {
+    return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name }});
+  }
+
   public async uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec): Promise<Array<{}>> {
     let text;
     if (typeof options.data === 'string') {
@@ -150,8 +155,8 @@ class MultinetAPI {
     });
   }
 
-  public async downloadTable(workspace: string, table: string): Promise<any> {
-    return await this.client.raw_get(`/workspaces/${workspace}/tables/${table}/download`);
+  public downloadTable(workspace: string, table: string): AxiosPromise {
+    return this.client.axios.get(`/workspaces/${workspace}/tables/${table}/download`);
   }
 
   public deleteTable(workspace: string, table: string): Promise<string> {
@@ -172,8 +177,8 @@ class MultinetAPI {
     return this.client.post(`/workspaces/${workspace}/aql`, query, {'Content-Type': 'text/plain'});
   }
 
-  public async downloadGraph(workspace: string, graph: string): Promise<any> {
-    return await this.client.raw_get(`/workspaces/${workspace}/graphs/${graph}/download`);
+  public downloadGraph(workspace: string, graph: string): AxiosPromise {
+    return this.client.axios.get(`/workspaces/${workspace}/graphs/${graph}/download`);
   }
 }
 
