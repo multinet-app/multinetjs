@@ -1,5 +1,5 @@
 import { Client } from './client';
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, AxiosRequestConfig } from 'axios';
 
 export interface TableRow {
   _key: string;
@@ -142,7 +142,7 @@ class MultinetAPI {
     return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name }});
   }
 
-  public async uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec): Promise<Array<{}>> {
+  public async uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec, params: AxiosRequestConfig = {}): Promise<Array<{}>> {
     let text;
     if (typeof options.data === 'string') {
       text = options.data;
@@ -151,7 +151,8 @@ class MultinetAPI {
     }
 
     return this.client.post(`/${options.type}/${workspace}/${table}`, text, {
-      'Content-Type': 'text/plain',
+      headers: { 'Content-Type': 'text/plain' },
+      ...params
     });
   }
 
@@ -174,7 +175,7 @@ class MultinetAPI {
   }
 
   public aql(workspace: string, query: string): Promise<any[]> {
-    return this.client.post(`/workspaces/${workspace}/aql`, query, {'Content-Type': 'text/plain'});
+    return this.client.post(`/workspaces/${workspace}/aql`, query, { headers: { 'Content-Type': 'text/plain' }});
   }
 
   public downloadGraph(workspace: string, graph: string): AxiosPromise {

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 export class Client {
   public axios: AxiosInstance;
@@ -21,9 +21,9 @@ export class Client {
     });
   }
 
-  public post(path: string, params: {} = {}, headers: {} = {}): Promise<any> {
+  public post(path: string, data: any = null, params: AxiosRequestConfig = {}): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.axios.post(path, params, { headers, })
+      this.axios.post(path, data, params)
         .then((resp) => {
           resolve(resp.data);
         })
