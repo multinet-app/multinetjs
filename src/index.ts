@@ -139,10 +139,15 @@ class MultinetAPI {
   }
 
   public renameWorkspace(workspace: string, name: string): AxiosPromise {
-    return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name }});
+    return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name } });
   }
 
-  public async uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec, params: AxiosRequestConfig = {}): Promise<Array<{}>> {
+  public async uploadTable(
+    workspace: string,
+    table: string,
+    options: FileUploadOptionsSpec,
+    params: AxiosRequestConfig = {}
+  ): Promise<Array<{}>> {
     let text;
     if (typeof options.data === 'string') {
       text = options.data;
@@ -152,7 +157,7 @@ class MultinetAPI {
 
     return this.client.post(`/${options.type}/${workspace}/${table}`, text, {
       headers: { 'Content-Type': 'text/plain' },
-      ...params
+      ...params,
     });
   }
 
@@ -175,7 +180,7 @@ class MultinetAPI {
   }
 
   public aql(workspace: string, query: string): Promise<any[]> {
-    return this.client.post(`/workspaces/${workspace}/aql`, query, { headers: { 'Content-Type': 'text/plain' }});
+    return this.client.post(`/workspaces/${workspace}/aql`, query, { headers: { 'Content-Type': 'text/plain' } });
   }
 
   public downloadGraph(workspace: string, graph: string): AxiosPromise {
