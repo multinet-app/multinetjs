@@ -146,7 +146,8 @@ class MultinetAPI {
     workspace: string,
     table: string,
     options: FileUploadOptionsSpec,
-    params: AxiosRequestConfig = {}
+    key?: string,
+    overwrite?: boolean,
   ): Promise<Array<{}>> {
     let text;
     if (typeof options.data === 'string') {
@@ -157,7 +158,10 @@ class MultinetAPI {
 
     return this.client.post(`/${options.type}/${workspace}/${table}`, text, {
       headers: { 'Content-Type': 'text/plain' },
-      ...params,
+      params: {
+        key: key || undefined,
+        overwrite: overwrite || undefined,
+      }
     });
   }
 
