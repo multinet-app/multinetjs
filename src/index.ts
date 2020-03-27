@@ -159,7 +159,7 @@ class MultinetAPI {
       params: {
         key: key || undefined,
         overwrite: overwrite || undefined,
-      }
+      },
     });
   }
 
