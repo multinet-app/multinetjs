@@ -60,7 +60,7 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
 export interface FileUploadOptionsSpec {
   type: UploadType;
   data: string | File;
-  key?: string,
+  key?: string;
   overwrite?: boolean;
 }
 
