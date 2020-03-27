@@ -60,6 +60,8 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
 export interface FileUploadOptionsSpec {
   type: UploadType;
   data: string | File;
+  key?: string,
+  overwrite?: boolean;
 }
 
 export interface CreateGraphOptionsSpec {
@@ -142,21 +144,17 @@ class MultinetAPI {
     return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name } });
   }
 
-  public async uploadTable(
-    workspace: string,
-    table: string,
-    options: FileUploadOptionsSpec,
-    key?: string,
-    overwrite?: boolean,
-  ): Promise<Array<{}>> {
+  public async uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec): Promise<Array<{}>> {
+    const { type, data, key, overwrite } = options;
     let text;
-    if (typeof options.data === 'string') {
-      text = options.data;
+
+    if (typeof data === 'string') {
+      text = data;
     } else {
-      text = await fileToText(options.data);
+      text = await fileToText(data);
     }
 
-    return this.client.post(`/${options.type}/${workspace}/${table}`, text, {
+    return this.client.post(`/${type}/${workspace}/${table}`, text, {
       headers: { 'Content-Type': 'text/plain' },
       params: {
         key: key || undefined,
