@@ -6,6 +6,7 @@ export class Client {
   constructor(baseURL: string) {
     this.axios = axios.create({
       baseURL,
+      withCredentials: true,
     });
   }
 
