@@ -185,6 +185,15 @@ class MultinetAPI {
     return this.client.post(`/workspaces/${workspace}/aql`, query, { headers: { 'Content-Type': 'text/plain' } });
   }
 
+  public createAQLTable(workspace: string, table: string, query: string): Promise<any[]> {
+    return this.client.post(`/workspaces/${workspace}/tables`, query, {
+      headers: { 'Content-Type': 'text/plain' },
+      params: {
+        table,
+      },
+    });
+  }
+
   public downloadGraph(workspace: string, graph: string): AxiosPromise {
     return this.client.axios.get(`/workspaces/${workspace}/graphs/${graph}/download`);
   }
