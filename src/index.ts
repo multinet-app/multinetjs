@@ -144,8 +144,13 @@ class MultinetAPI {
     return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name } });
   }
 
-  public async uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec): Promise<Array<{}>> {
+  public async uploadTable(
+    workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig
+  ): Promise<Array<{}>> {
+    const headers = config ? config.headers : undefined;
+    const params = config ? config.params : undefined;
     const { type, data, key, overwrite } = options;
+
     let text;
 
     if (typeof data === 'string') {
@@ -155,8 +160,10 @@ class MultinetAPI {
     }
 
     return this.client.post(`/${type}/${workspace}/${table}`, text, {
-      headers: { 'Content-Type': 'text/plain' },
+      ...config,
+      headers: { ...headers, 'Content-Type': 'text/plain' },
       params: {
+        ...params,
         key: key || undefined,
         overwrite: overwrite || undefined,
       },
