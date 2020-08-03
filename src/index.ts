@@ -127,7 +127,7 @@ class MultinetAPI {
       throw new Error('argument "workspace" must not be empty');
     }
 
-    return this.client.axios.put(`workspaces/${workspace}/permissions`, permissions);
+    return this.client.put(`workspaces/${workspace}/permissions`, permissions);
   }
 
   public searchUsers(query: string): Promise<UserSpec[]> {

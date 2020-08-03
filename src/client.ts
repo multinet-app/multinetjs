@@ -34,6 +34,18 @@ export class Client {
     });
   }
 
+  public put(path: string, data: any = null, params: AxiosRequestConfig = {}): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.axios.put(path, data, params)
+        .then((resp) => {
+          resolve(resp.data);
+        })
+        .catch((resp) => {
+          reject(resp.response);
+        });
+    });
+  }
+
   public delete(path: string, params: {} = {}): Promise<any> {
     return new Promise((resolve, reject) => {
       this.axios.delete(path, params)
