@@ -130,6 +130,10 @@ class MultinetAPI {
     return this.client.axios.put(`workspaces/${workspace}/permissions`, permissions);
   }
 
+  public searchUsers(query: string): Promise<UserSpec[]> {
+    return this.client.get('/user/search', { query });
+  }
+
   public tables(workspace: string, options: TablesOptionsSpec = {}): Promise<string[]> {
     return this.client.get(`workspaces/${workspace}/tables`, options);
   }
