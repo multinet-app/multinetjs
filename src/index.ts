@@ -33,12 +33,12 @@ export interface EdgesSpec {
 }
 
 export interface UserSpec {
-  family_name: string
-  given_name: string
-  name: string
-  picture: string
-  email: string
-  sub: string
+  family_name: string;
+  given_name: string;
+  name: string;
+  picture: string;
+  email: string;
+  sub: string;
 }
 
 export interface WorkspacePermissionsSpec {
@@ -122,7 +122,9 @@ class MultinetAPI {
     return this.client.get(`workspaces/${workspace}/permissions`);
   }
 
-  public setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): Promise<WorkspacePermissionsSpec> {
+  public setWorkspacePermissions(
+    workspace: string, permissions: WorkspacePermissionsSpec
+  ): Promise<WorkspacePermissionsSpec> {
     if (!workspace) {
       throw new Error('argument "workspace" must not be empty');
     }
