@@ -62,6 +62,10 @@ export function validUploadType(type: string): type is UploadType {
 
 export type Direction = 'all' | 'incoming' | 'outgoing';
 
+export interface OptionsSpec {
+  axiosRequestConfig?: AxiosRequestConfig;
+}
+
 export interface TablesOptionsSpec {
   type?: TableType;
 }
@@ -75,7 +79,7 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
   direction?: Direction;
 };
 
-export interface FileUploadOptionsSpec {
+export interface FileUploadOptionsSpec extends OptionsSpec {
   type: UploadType;
   data: string | File;
   key?: string;
@@ -177,8 +181,9 @@ class MultinetAPI {
   }
 
   public async uploadTable(
-    workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig
+    workspace: string, table: string, options: FileUploadOptionsSpec
   ): Promise<Array<{}>> {
+    const config = options.axiosRequestConfig;
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
     const { type, data, key, overwrite } = options;
