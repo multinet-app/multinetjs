@@ -32,6 +32,24 @@ export interface EdgesSpec {
   edges: Edge[];
 }
 
+export interface UserSpec {
+  family_name: string;
+  given_name: string;
+  name: string;
+  picture: string;
+  email: string;
+  sub: string;
+}
+
+export interface WorkspacePermissionsSpec {
+  owner: UserSpec;
+  maintainers: UserSpec[];
+  writers: UserSpec[];
+  readers: UserSpec[];
+  public: boolean;
+}
+
+
 export type TableType = 'all' | 'node' | 'edge';
 
 export type TableUploadType = 'csv';
@@ -96,12 +114,26 @@ class MultinetAPI {
     return this.client.get('workspaces');
   }
 
-  public workspace(workspace: string): Promise<string> {
+  public getWorkspacePermissions(workspace: string): Promise<WorkspacePermissionsSpec> {
     if (!workspace) {
       throw new Error('argument "workspace" must not be empty');
     }
 
-    return this.client.get(`workspaces/${workspace}`);
+    return this.client.get(`workspaces/${workspace}/permissions`);
+  }
+
+  public setWorkspacePermissions(
+    workspace: string, permissions: WorkspacePermissionsSpec
+  ): Promise<WorkspacePermissionsSpec> {
+    if (!workspace) {
+      throw new Error('argument "workspace" must not be empty');
+    }
+
+    return this.client.put(`workspaces/${workspace}/permissions`, permissions);
+  }
+
+  public searchUsers(query: string): Promise<UserSpec[]> {
+    return this.client.get('/user/search', { query });
   }
 
   public tables(workspace: string, options: TablesOptionsSpec = {}): Promise<string[]> {
