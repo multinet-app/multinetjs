@@ -114,6 +114,13 @@ class MultinetAPI {
     }
   }
 
+  public logout() {
+    this.client.get('/user/logout');
+    this.client.removeAuthToken();
+  }
+
+  public userInfo(): Promise<UserSpec | null> {
+    return this.client.get('/user/info');
   }
 
   public workspaces(): Promise<string[]> {
