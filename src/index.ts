@@ -110,13 +110,21 @@ class MultinetAPI {
     this.client = new Client(baseURL);
 
     if (authToken !== null) {
-      this.client.setAuthToken(authToken);
+      this.setAuthToken(authToken);
     }
+  }
+
+  public setAuthToken(token: string) {
+    this.client.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+
+  public removeAuthToken() {
+    delete this.client.axios.defaults.headers.common.Authorization;
   }
 
   public logout() {
     this.client.get('/user/logout');
-    this.client.removeAuthToken();
+    this.removeAuthToken();
   }
 
   public userInfo(): Promise<UserSpec | null> {

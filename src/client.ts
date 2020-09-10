@@ -7,14 +7,6 @@ export class Client {
     this.axios = axios.create({ baseURL });
   }
 
-  public setAuthToken(token: string) {
-    this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  }
-
-  public removeAuthToken() {
-    delete this.axios.defaults.headers.common.Authorization;
-  }
-
   public get(path: string, params: {} = {}): Promise<any> {
     return new Promise((resolve, reject) => {
       this.axios.get(path, { params, })
