@@ -106,8 +106,29 @@ function fileToText(file: File): Promise<string> {
 class MultinetAPI {
   private client: Client;
 
-  constructor(baseURL: string) {
+  constructor(baseURL: string, authToken: string | null = null) {
     this.client = new Client(baseURL);
+
+    if (authToken !== null) {
+      this.setAuthToken(authToken);
+    }
+  }
+
+  public setAuthToken(token: string) {
+    this.client.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+
+  public removeAuthToken() {
+    delete this.client.axios.defaults.headers.common.Authorization;
+  }
+
+  public logout() {
+    this.client.get('/user/logout');
+    this.removeAuthToken();
+  }
+
+  public userInfo(): Promise<UserSpec | null> {
+    return this.client.get('/user/info');
   }
 
   public workspaces(): Promise<string[]> {
@@ -238,6 +259,6 @@ class MultinetAPI {
   }
 }
 
-export function multinetApi(baseURL: string): MultinetAPI {
-  return new MultinetAPI(baseURL);
+export function multinetApi(baseURL: string, authToken: string | null = null): MultinetAPI {
+  return new MultinetAPI(baseURL, authToken);
 }
