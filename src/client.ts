@@ -4,7 +4,7 @@ export class Client {
   public axios: AxiosInstance;
 
   constructor(baseURL: string) {
-    this.axios = axios.create({ baseURL });
+    this.axios = axios.create({ baseURL, withCredentials: true });
   }
 
   public get(path: string, params: {} = {}): Promise<any> {
