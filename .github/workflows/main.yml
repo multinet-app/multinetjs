@@ -38,11 +38,11 @@ jobs:
         if: steps.multinetjs-cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: Create a production build
-        run: yarn build
-
       - name: Run linting test
         run: yarn lint
+
+      - name: Create a production build
+        run: yarn build
 
       - name: Get the publishing version number
         id: version-number
