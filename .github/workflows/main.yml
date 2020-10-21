@@ -9,6 +9,9 @@ on:
     branches:
       - master
 
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
 jobs:
   build-and-test:
     name: Build and test on Ubuntu - Node 10
@@ -31,6 +34,9 @@ jobs:
       - name: Install yarn packages
         if: steps.multinetjs-cache.outputs.cache-hit != 'true'
         run: yarn install
+
+      - name: Display tag
+        run: echo ${{ github.ref }}
 
       - run: yarn build
       - run: yarn lint
