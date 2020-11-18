@@ -75,11 +75,22 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
   direction?: Direction;
 };
 
+export interface TableMetadata {
+  table: {
+    type: 'edge' | 'node';
+    columns: Array<{
+      key: string;
+      type: 'number' | 'label' | 'category' | 'date' | 'boolean';
+    }>;
+  };
+}
+
 export interface FileUploadOptionsSpec {
   type: UploadType;
   data: string | File;
   key?: string;
   overwrite?: boolean;
+  metadata?: TableMetadata;
 }
 
 export interface CreateGraphOptionsSpec {
@@ -189,7 +200,7 @@ class MultinetAPI {
   ): Promise<Array<{}>> {
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
-    const { type, data, key, overwrite } = options;
+    const { type, data, key, overwrite, metadata } = options;
 
     let text;
 
@@ -206,6 +217,7 @@ class MultinetAPI {
         ...params,
         key: key || undefined,
         overwrite: overwrite || undefined,
+        metadata: metadata || undefined,
       },
     });
   }
