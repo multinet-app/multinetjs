@@ -75,11 +75,16 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
   direction?: Direction;
 };
 
+export type ColumnType = 'number' | 'label' | 'category' | 'date' | 'boolean';
+
 export interface FileUploadOptionsSpec {
   type: UploadType;
   data: string | File;
   key?: string;
   overwrite?: boolean;
+  columnTypes?: {
+    [key: string]: ColumnType;
+  };
 }
 
 export interface CreateGraphOptionsSpec {
@@ -189,7 +194,7 @@ class MultinetAPI {
   ): Promise<Array<{}>> {
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
-    const { type, data, key, overwrite } = options;
+    const { type, data, key, overwrite, columnTypes } = options;
 
     let text;
 
@@ -199,6 +204,20 @@ class MultinetAPI {
       text = await fileToText(data);
     }
 
+    let metadata;
+    if (columnTypes) {
+      const columns = Object.keys(columnTypes).map((column) => ({
+        key: column,
+        type: columnTypes[column],
+      }));
+
+      metadata = metadata || {};
+      metadata = {
+        ...metadata,
+        columns,
+      };
+    }
+
     return this.client.post(`/${type}/${workspace}/${table}`, text, {
       ...config,
       headers: { ...headers, 'Content-Type': 'text/plain' },
@@ -206,6 +225,7 @@ class MultinetAPI {
         ...params,
         key: key || undefined,
         overwrite: overwrite || undefined,
+        metadata: metadata || undefined,
       },
     });
   }
