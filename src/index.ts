@@ -211,11 +211,7 @@ class MultinetAPI {
         type: columnTypes[column],
       }));
 
-      metadata = metadata || {};
-      metadata = {
-        ...metadata,
-        columns,
-      };
+      metadata = { columns };
     }
 
     return this.client.post(`/${type}/${workspace}/${table}`, text, {
