@@ -77,6 +77,21 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
 
 export type ColumnType = 'number' | 'label' | 'category' | 'date' | 'boolean';
 
+export interface ColumnTypesEntry {
+  key: string;
+  type: ColumnType;
+}
+
+export interface ColumnTypes {
+  [key: string]: ColumnType;
+}
+
+export interface TableMetadata {
+  table: {
+    columns: ColumnTypesEntry[];
+  };
+}
+
 export interface FileUploadOptionsSpec {
   type: UploadType;
   data: string | File;
@@ -232,6 +247,20 @@ class MultinetAPI {
 
   public deleteTable(workspace: string, table: string): Promise<string> {
     return this.client.delete(`/workspaces/${workspace}/tables/${table}`);
+  }
+
+  public tableMetadata(workspace: string, table: string): Promise<TableMetadata> {
+    return this.client.get(`/workspaces/${workspace}/tables/${table}/metadata`);
+  }
+
+  public async tableColumnTypes(workspace: string, table: string): Promise<ColumnTypes> {
+    const metadata = await this.tableMetadata(workspace, table);
+
+    const types: ColumnTypes = {};
+    metadata.table.columns.forEach((entry) => {
+      types[entry.key] = entry.type;
+    });
+    return types;
   }
 
   public createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<string> {
