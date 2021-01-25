@@ -87,6 +87,7 @@ export interface ColumnTypes {
 }
 
 export interface TableMetadata {
+  item_id: string;
   table: {
     columns: ColumnTypesEntry[];
   };
