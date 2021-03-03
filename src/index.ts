@@ -125,7 +125,7 @@ function fileToText(file: File): Promise<string> {
 }
 
 class MultinetAPI {
-  private client: Client;
+  public client: Client;
 
   constructor(baseURL: string) {
     this.client = new Client(baseURL);
