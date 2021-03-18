@@ -20,6 +20,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
+      "jest"
     ],
     "paths": {
       "@/*": [
