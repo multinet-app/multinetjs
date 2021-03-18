@@ -255,7 +255,9 @@ class MultinetAPI {
     return extract(this._attributes(workspace, graph, nodeId));
   }
 
-  public _edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): AxiosPromise<EdgesSpec> {
+  public _edges(
+    workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}
+  ): AxiosPromise<EdgesSpec> {
     return this.client.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/edges`, {
       params: options,
     });
