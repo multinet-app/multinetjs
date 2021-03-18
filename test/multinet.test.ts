@@ -1,9 +1,13 @@
 import { multinetApi } from '../src/index';
+import { AxiosError } from 'axios';
 
-function add(a: number, b: number): number {
-  return a + b + 1;
-}
+const badApi = multinetApi('http://example.com');
 
-test('hello world', () => {
-  expect(add(3, 4)).toBe(7);
+test('general', async () => {
+  expect(badApi).toEqual(expect.anything());
+
+  // The "bad api" object should fail when invoked.
+  await expect(badApi.workspaces())
+    .rejects
+    .toHaveProperty('isAxiosError', true);
 });
