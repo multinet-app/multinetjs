@@ -28,8 +28,6 @@
   },
   "devDependencies": {
     "esm": "^3.2.25",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.11.0",
     "tslib": "^1.10.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
