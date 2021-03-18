@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 
 const badApi = multinetApi('http://example.com');
 
-test('general', async () => {
+test('bad api', async () => {
   expect(badApi).toEqual(expect.anything());
 
   // The "bad api" object should fail when invoked.
