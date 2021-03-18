@@ -19,7 +19,7 @@
     "build": "tsc",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "lint:fix": "tslint --force -p tsconfig.json -c tslint.json",
-    "test": "tape -r esm test/**/*.test.js | tap-spec"
+    "test": "jest"
   },
   "author": "Kitware, Inc.",
   "license": "Apache-2.0",
