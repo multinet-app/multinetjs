@@ -42,6 +42,13 @@ export interface UserSpec {
   sub: string;
 }
 
+export interface UserSpec2 {
+  username: string;
+  first_name: string;
+  last_name: string;
+  admin: boolean;
+}
+
 export interface WorkspacePermissionsSpec {
   owner: UserSpec;
   maintainers: UserSpec[];
@@ -119,6 +126,14 @@ class MultinetAPI {
 
   public setAuthorizationToken(key: string) {
     this.axios.defaults.headers.common['Authorization'] = `Token ${key}`;
+  }
+
+  public _me(): AxiosPromise<UserSpec2> {
+    return this.client.get('/users/me');
+  }
+
+  public me(): Promise<UserSpec2> {
+    return extract(this._me());
   }
 
   public logout() {
