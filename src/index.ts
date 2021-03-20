@@ -128,6 +128,10 @@ class MultinetAPI {
     this.axios.defaults.headers.common['Authorization'] = `Token ${key}`;
   }
 
+  public removeAuthorizationToken() {
+    delete this.client.defaults.headers.common['Authorization'];
+  }
+
   public _me(): AxiosPromise<UserSpec2> {
     return this.client.get('/users/me');
   }

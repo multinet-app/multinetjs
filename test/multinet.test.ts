@@ -33,4 +33,14 @@ test('login with API key', async () => {
     last_name: '',
     admin: true,
   });
+
+  api.removeAuthorizationToken();
+
+  try {
+    await api.me();
+    expect(false).toBe(true);
+  } catch (err) {
+    expect(err.response.status).toBe(401);
+    expect(err.response.data).toHaveProperty('detail', 'Authentication credentials were not provided.');
+  }
 });
