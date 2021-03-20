@@ -115,7 +115,10 @@ class MultinetAPI {
     this.axios = multinetAxiosInstance(axios.create({
       baseURL,
     }));
+  }
 
+  public setAuthorizationToken(key: string) {
+    this.axios.defaults.headers.common['Authorization'] = `Token ${key}`;
   }
 
   public logout() {
