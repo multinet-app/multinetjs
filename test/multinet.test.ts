@@ -4,6 +4,8 @@ import { AxiosError } from 'axios';
 const badApi = multinetApi('http://example.com');
 
 test('bad api', async () => {
+  expect.assertions(2);
+
   expect(badApi).toBeInstanceOf(MultinetAPI);
 
   // The "bad api" object should fail when invoked.
@@ -13,12 +15,13 @@ test('bad api', async () => {
 });
 
 test('login with API key', async () => {
+  expect.assertions(6);
+
   const api = multinetApi('http://localhost:8000/api');
   expect(api).toBeInstanceOf(MultinetAPI);
 
   try {
     await api.me();
-    expect(false).toBe(true);
   } catch (err) {
     expect(err.response.status).toBe(401);
     expect(err.response.data).toHaveProperty('detail', 'Authentication credentials were not provided.');
@@ -38,7 +41,6 @@ test('login with API key', async () => {
 
   try {
     await api.me();
-    expect(false).toBe(true);
   } catch (err) {
     expect(err.response.status).toBe(401);
     expect(err.response.data).toHaveProperty('detail', 'Authentication credentials were not provided.');
