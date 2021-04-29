@@ -20,6 +20,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
+      "jest"
     ],
     "paths": {
       "@/*": [
@@ -34,9 +35,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
