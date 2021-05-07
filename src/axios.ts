@@ -15,6 +15,23 @@ import {
   WorkspacePermissionsSpec,
 } from './index';
 
+function fileToText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target === null || typeof e.target.result !== 'string') {
+        throw new Error();
+      }
+      resolve(e.target.result);
+    };
+    reader.onerror = (e) => {
+      reject();
+    };
+
+    reader.readAsText(file);
+  });
+}
+
 export interface MultinetAxiosInstance extends AxiosInstance {
   logout(): any;
   userInfo(): AxiosPromise<UserSpec | null>;
@@ -41,23 +58,6 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   aql(workspace: string, query: string): AxiosPromise<any[]>;
   createAQLTable(workspace: string, table: string, query: string): AxiosPromise<any[]>;
   downloadGraph(workspace: string, graph: string): AxiosPromise<any>;
-}
-
-function fileToText(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target === null || typeof e.target.result !== 'string') {
-        throw new Error();
-      }
-      resolve(e.target.result);
-    };
-    reader.onerror = (e) => {
-      reject();
-    };
-
-    reader.readAsText(file);
-  });
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
