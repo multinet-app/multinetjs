@@ -60,8 +60,9 @@ function fileToText(file: File): Promise<string> {
   });
 }
 
-export function multinetAxiosInstance(a: AxiosInstance): MultinetAxiosInstance {
-  const Proto = Object.getPrototypeOf(a);
+export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
+  const axiosInstance = axios.create(config);
+  const Proto = Object.getPrototypeOf(axiosInstance);
 
   Proto.userInfo = function(): AxiosPromise<UserSpec | null> {
     return this.get('/user/info');
