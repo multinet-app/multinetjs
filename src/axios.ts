@@ -1,6 +1,19 @@
 import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { CreateGraphOptionsSpec, TableMetadata, FileUploadOptionsSpec, EdgesSpec, EdgesOptionsSpec, NodesSpec, OffsetLimitSpec, GraphSpec, RowsSpec, TablesOptionsSpec, UserSpec, WorkspacePermissionsSpec, } from './index';
+import {
+  CreateGraphOptionsSpec,
+  TableMetadata,
+  FileUploadOptionsSpec,
+  EdgesSpec,
+  EdgesOptionsSpec,
+  NodesSpec,
+  OffsetLimitSpec,
+  GraphSpec,
+  RowsSpec,
+  TablesOptionsSpec,
+  UserSpec,
+  WorkspacePermissionsSpec,
+} from './index';
 
 export interface MultinetAxiosInstance extends AxiosInstance {
   logout(): any;
