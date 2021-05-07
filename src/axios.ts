@@ -222,5 +222,5 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`/workspaces/${workspace}/graphs/${graph}/download`);
   }
 
-  return a as MultinetAxiosInstance;
+  return axiosInstance as MultinetAxiosInstance;
 }
