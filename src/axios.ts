@@ -33,7 +33,7 @@ function fileToText(file: File): Promise<string> {
 }
 
 export interface MultinetAxiosInstance extends AxiosInstance {
-  logout(): any;
+  logout(): void;
   userInfo(): AxiosPromise<UserSpec | null>;
   workspaces(): AxiosPromise<string[]>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
@@ -63,6 +63,10 @@ export interface MultinetAxiosInstance extends AxiosInstance {
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
   const axiosInstance = axios.create(config);
   const Proto = Object.getPrototypeOf(axiosInstance);
+
+  Proto.logout = function(): void {
+    this.get('/user/logout');
+  }
 
   Proto.userInfo = function(): AxiosPromise<UserSpec | null> {
     return this.get('/user/info');

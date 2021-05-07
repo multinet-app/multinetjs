@@ -116,8 +116,8 @@ class MultinetAPI {
 
   }
 
-  public logout() {
-    this.axios.get('/user/logout');
+  public logout(): void {
+    this.axios.logout();
   }
 
   public async userInfo(): Promise<UserSpec | null> {
