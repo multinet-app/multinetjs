@@ -112,9 +112,7 @@ class MultinetAPI {
   public axios: MultinetAxiosInstance;
 
   constructor(baseURL: string) {
-    this.axios = multinetAxiosInstance(axios.create({
-      baseURL,
-    }));
+    this.axios = multinetAxiosInstance({ baseURL });
 
   }
 
