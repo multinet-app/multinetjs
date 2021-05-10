@@ -1,5 +1,6 @@
-import { Client } from './client';
-import { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { multinetAxiosInstance, MultinetAxiosInstance } from './axios';
+
+import axios, { AxiosRequestConfig } from 'axios';
 
 export interface TableRow {
   _key: string;
@@ -107,151 +108,104 @@ export interface CreateGraphOptionsSpec {
   edgeTable: string;
 }
 
-function fileToText(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target === null || typeof e.target.result !== 'string') {
-        throw new Error();
-      }
-      resolve(e.target.result);
-    };
-    reader.onerror = (e) => {
-      reject();
-    };
-
-    reader.readAsText(file);
-  });
-}
-
 class MultinetAPI {
-  public client: Client;
+  public axios: MultinetAxiosInstance;
 
   constructor(baseURL: string) {
-    this.client = new Client(baseURL);
+    this.axios = multinetAxiosInstance({ baseURL });
+
   }
 
-  public logout() {
-    this.client.get('/user/logout');
+  public logout(): void {
+    this.axios.logout();
   }
 
-  public userInfo(): Promise<UserSpec | null> {
-    return this.client.get('/user/info');
+  public async userInfo(): Promise<UserSpec | null> {
+    return (await this.axios.userInfo()).data;
   }
 
-  public workspaces(): Promise<string[]> {
-    return this.client.get('workspaces');
+  public async workspaces(): Promise<string[]> {
+    return (await this.axios.workspaces()).data;
   }
 
-  public getWorkspacePermissions(workspace: string): Promise<WorkspacePermissionsSpec> {
+  public async getWorkspacePermissions(workspace: string): Promise<WorkspacePermissionsSpec> {
     if (!workspace) {
       throw new Error('argument "workspace" must not be empty');
     }
 
-    return this.client.get(`workspaces/${workspace}/permissions`);
+    return (await this.axios.getWorkspacePermissions(workspace)).data;
   }
 
-  public setWorkspacePermissions(
+  public async setWorkspacePermissions(
     workspace: string, permissions: WorkspacePermissionsSpec
   ): Promise<WorkspacePermissionsSpec> {
     if (!workspace) {
       throw new Error('argument "workspace" must not be empty');
     }
 
-    return this.client.put(`workspaces/${workspace}/permissions`, permissions);
+    return (await this.axios.setWorkspacePermissions(workspace, permissions)).data
   }
 
-  public searchUsers(query: string): Promise<UserSpec[]> {
-    return this.client.get('/user/search', { query });
+  public async searchUsers(query: string): Promise<UserSpec[]> {
+    return (await this.axios.searchUsers(query)).data;
   }
 
-  public tables(workspace: string, options: TablesOptionsSpec = {}): Promise<string[]> {
-    return this.client.get(`workspaces/${workspace}/tables`, options);
+  public async tables(workspace: string, options: TablesOptionsSpec = {}): Promise<string[]> {
+    return (await this.axios.tables(workspace, options)).data;
   }
 
-  public table(workspace: string, table: string, options: OffsetLimitSpec = {}): Promise<RowsSpec> {
-    return this.client.get(`workspaces/${workspace}/tables/${table}`, options);
+  public async table(workspace: string, table: string, options: OffsetLimitSpec = {}): Promise<RowsSpec> {
+    return (await this.axios.table(workspace, table, options)).data;
   }
 
-  public graphs(workspace: string): Promise<string[]> {
-    return this.client.get(`workspaces/${workspace}/graphs`);
+  public async graphs(workspace: string): Promise<string[]> {
+    return (await this.axios.graphs(workspace)).data;
   }
 
-  public graph(workspace: string, graph: string): Promise<GraphSpec> {
-    return this.client.get(`workspaces/${workspace}/graphs/${graph}`);
+  public async graph(workspace: string, graph: string): Promise<GraphSpec> {
+    return (await this.axios.graph(workspace, graph)).data;
   }
 
-  public nodes(workspace: string, graph: string, options: OffsetLimitSpec = {}): Promise<NodesSpec> {
-    return this.client.get(`workspaces/${workspace}/graphs/${graph}/nodes`, options);
+  public async nodes(workspace: string, graph: string, options: OffsetLimitSpec = {}): Promise<NodesSpec> {
+    return (await this.axios.nodes(workspace, graph, options)).data;
   }
 
-  public attributes(workspace: string, graph: string, nodeId: string): Promise<{}> {
-    return this.client.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/attributes`);
+  public async attributes(workspace: string, graph: string, nodeId: string): Promise<{}> {
+    return (await this.axios.attributes(workspace, graph, nodeId)).data;
   }
 
-  public edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): Promise<EdgesSpec> {
-    return this.client.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/edges`, options);
+  public async edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): Promise<EdgesSpec> {
+    return (await this.axios.edges(workspace, graph, nodeId, options)).data;
   }
 
-  public createWorkspace(workspace: string): Promise<string> {
-    return this.client.post(`/workspaces/${workspace}`);
+  public async createWorkspace(workspace: string): Promise<string> {
+    return (await this.axios.createWorkspace(workspace)).data;
   }
 
-  public deleteWorkspace(workspace: string): Promise<string> {
-    return this.client.delete(`/workspaces/${workspace}`);
+  public async deleteWorkspace(workspace: string): Promise<string> {
+    return (await this.axios.deleteWorkspace(workspace)).data;
   }
 
-  public renameWorkspace(workspace: string, name: string): AxiosPromise {
-    return this.client.axios.put(`workspaces/${workspace}/name`, null, { params: { name } });
+  public async renameWorkspace(workspace: string, name: string): Promise<any> {
+    return (await this.axios.renameWorkspace(workspace, name)).data;
   }
 
   public async uploadTable(
     workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig
   ): Promise<Array<{}>> {
-    const headers = config ? config.headers : undefined;
-    const params = config ? config.params : undefined;
-    const { type, data, key, overwrite, columnTypes } = options;
-
-    let text;
-
-    if (typeof data === 'string') {
-      text = data;
-    } else {
-      text = await fileToText(data);
-    }
-
-    let metadata;
-    if (columnTypes) {
-      const columns = Object.keys(columnTypes).map((column) => ({
-        key: column,
-        type: columnTypes[column],
-      }));
-
-      metadata = { columns };
-    }
-
-    return this.client.post(`/${type}/${workspace}/${table}`, text, {
-      ...config,
-      headers: { ...headers, 'Content-Type': 'text/plain' },
-      params: {
-        ...params,
-        key: key || undefined,
-        overwrite: overwrite || undefined,
-        metadata: metadata || undefined,
-      },
-    });
+    return (await this.axios.uploadTable(workspace, table, options, config)).data;
   }
 
-  public downloadTable(workspace: string, table: string): AxiosPromise {
-    return this.client.axios.get(`/workspaces/${workspace}/tables/${table}/download`);
+  public async downloadTable(workspace: string, table: string): Promise<any> {
+    return (await this.axios.downloadTable(workspace, table)).data;
   }
 
-  public deleteTable(workspace: string, table: string): Promise<string> {
-    return this.client.delete(`/workspaces/${workspace}/tables/${table}`);
+  public async deleteTable(workspace: string, table: string): Promise<string> {
+    return (await this.axios.deleteTable(workspace, table)).data;
   }
 
-  public tableMetadata(workspace: string, table: string): Promise<TableMetadata> {
-    return this.client.get(`/workspaces/${workspace}/tables/${table}/metadata`);
+  public async tableMetadata(workspace: string, table: string): Promise<TableMetadata> {
+    return (await this.axios.tableMetadata(workspace, table)).data;
   }
 
   public async tableColumnTypes(workspace: string, table: string): Promise<ColumnTypes> {
@@ -264,31 +218,24 @@ class MultinetAPI {
     return types;
   }
 
-  public createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<string> {
-    return this.client.post(`/workspaces/${workspace}/graphs/${graph}`, {
-      edge_table: options.edgeTable,
-    });
+  public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<string> {
+    return (await this.axios.createGraph(workspace, graph, options)).data;
   }
 
-  public deleteGraph(workspace: string, graph: string): Promise<string> {
-    return this.client.delete(`/workspaces/${workspace}/graphs/${graph}`);
+  public async deleteGraph(workspace: string, graph: string): Promise<string> {
+    return (await this.axios.deleteGraph(workspace, graph)).data;
   }
 
-  public aql(workspace: string, query: string): Promise<any[]> {
-    return this.client.post(`/workspaces/${workspace}/aql`, query, { headers: { 'Content-Type': 'text/plain' } });
+  public async aql(workspace: string, query: string): Promise<any[]> {
+    return (await this.axios.aql(workspace, query)).data;
   }
 
-  public createAQLTable(workspace: string, table: string, query: string): Promise<any[]> {
-    return this.client.post(`/workspaces/${workspace}/tables`, query, {
-      headers: { 'Content-Type': 'text/plain' },
-      params: {
-        table,
-      },
-    });
+  public async createAQLTable(workspace: string, table: string, query: string): Promise<any[]> {
+    return (await this.axios.createAQLTable(workspace, table, query)).data;
   }
 
-  public downloadGraph(workspace: string, graph: string): AxiosPromise {
-    return this.client.axios.get(`/workspaces/${workspace}/graphs/${graph}/download`);
+  public async downloadGraph(workspace: string, graph: string): Promise<any> {
+    return (await this.axios.downloadGraph(workspace, graph)).data;
   }
 }
 
