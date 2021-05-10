@@ -1,9 +1,39 @@
 import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { CreateGraphOptionsSpec, TableMetadata, FileUploadOptionsSpec, EdgesSpec, EdgesOptionsSpec, NodesSpec, OffsetLimitSpec, GraphSpec, RowsSpec, TablesOptionsSpec, UserSpec, WorkspacePermissionsSpec, } from './index';
+import {
+  CreateGraphOptionsSpec,
+  TableMetadata,
+  FileUploadOptionsSpec,
+  EdgesSpec,
+  EdgesOptionsSpec,
+  NodesSpec,
+  OffsetLimitSpec,
+  GraphSpec,
+  RowsSpec,
+  TablesOptionsSpec,
+  UserSpec,
+  WorkspacePermissionsSpec,
+} from './index';
+
+function fileToText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target === null || typeof e.target.result !== 'string') {
+        throw new Error();
+      }
+      resolve(e.target.result);
+    };
+    reader.onerror = (e) => {
+      reject();
+    };
+
+    reader.readAsText(file);
+  });
+}
 
 export interface MultinetAxiosInstance extends AxiosInstance {
-  logout(): any;
+  logout(): void;
   userInfo(): AxiosPromise<UserSpec | null>;
   workspaces(): AxiosPromise<string[]>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
@@ -30,25 +60,13 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   downloadGraph(workspace: string, graph: string): AxiosPromise<any>;
 }
 
-function fileToText(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target === null || typeof e.target.result !== 'string') {
-        throw new Error();
-      }
-      resolve(e.target.result);
-    };
-    reader.onerror = (e) => {
-      reject();
-    };
+export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
+  const axiosInstance = axios.create(config);
+  const Proto = Object.getPrototypeOf(axiosInstance);
 
-    reader.readAsText(file);
-  });
-}
-
-export function multinetAxiosInstance(a: AxiosInstance): MultinetAxiosInstance {
-  const Proto = Object.getPrototypeOf(a);
+  Proto.logout = function(): void {
+    this.get('/user/logout');
+  }
 
   Proto.userInfo = function(): AxiosPromise<UserSpec | null> {
     return this.get('/user/info');
@@ -208,5 +226,5 @@ export function multinetAxiosInstance(a: AxiosInstance): MultinetAxiosInstance {
     return this.get(`/workspaces/${workspace}/graphs/${graph}/download`);
   }
 
-  return a as MultinetAxiosInstance;
+  return axiosInstance as MultinetAxiosInstance;
 }

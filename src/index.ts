@@ -112,14 +112,12 @@ class MultinetAPI {
   public axios: MultinetAxiosInstance;
 
   constructor(baseURL: string) {
-    this.axios = multinetAxiosInstance(axios.create({
-      baseURL,
-    }));
+    this.axios = multinetAxiosInstance({ baseURL });
 
   }
 
-  public logout() {
-    this.axios.get('/user/logout');
+  public logout(): void {
+    this.axios.logout();
   }
 
   public async userInfo(): Promise<UserSpec | null> {
