@@ -5,10 +5,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/client.d.ts",
-    "dist/client.d.ts.map",
-    "dist/client.js",
-    "dist/client.js.map",
     "dist/index.d.ts",
     "dist/index.d.ts.map",
     "dist/index.js",
@@ -23,23 +19,20 @@
     "build": "tsc",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "lint:fix": "tslint --force -p tsconfig.json -c tslint.json",
-    "test:server:up": "cd .. && PIPENV_DONT_LOAD_ENV=1 pipenv run test-server-up",
-    "test:server:down": "cd .. && PIPENV_DONT_LOAD_ENV=1 pipenv run test-server-down",
-    "test:server:clean": "cd .. && PIPENV_DONT_LOAD_ENV=1 pipenv run test-server-clean",
-    "test:server:restart": "yarn test:server:down; yarn test:server:clean && yarn test:server:up",
-    "test": "tape -r esm test/**/*.test.js | tap-spec"
+    "test": "jest"
   },
   "author": "Kitware, Inc.",
   "license": "Apache-2.0",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "ts-jest": "^26.5.4"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.21",
     "esm": "^3.2.25",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.11.0",
+    "jest": "^26.6.3",
     "tslib": "^1.10.0",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3"
+    "typescript": "^4.2.3"
   }
 }
