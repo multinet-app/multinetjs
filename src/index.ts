@@ -143,7 +143,7 @@ class MultinetAPI {
       throw new Error('argument "workspace" must not be empty');
     }
 
-    return (await this.axios.setWorkspacePermissions(workspace, permissions)).data
+    return (await this.axios.setWorkspacePermissions(workspace, permissions)).data;
   }
 
   public async searchUsers(query: string): Promise<UserSpec[]> {

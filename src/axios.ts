@@ -66,11 +66,11 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
   Proto.logout = function(): void {
     this.get('/user/logout');
-  }
+  };
 
   Proto.userInfo = function(): AxiosPromise<UserSpec | null> {
     return this.get('/user/info');
-  }
+  };
 
   Proto.workspaces = function(): AxiosPromise<string[]> {
     return this.get('workspaces');
@@ -146,9 +146,9 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.uploadTable = async function(workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
-    const headers = config ? config.headers : undefined;
-    const params = config ? config.params : undefined;
+  Proto.uploadTable = async function(workspace: string, table: string, options: FileUploadOptionsSpec, cfg?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
+    const headers = cfg ? cfg.headers : undefined;
+    const params = cfg ? cfg.params : undefined;
     const { type, data, key, overwrite, columnTypes } = options;
 
     let text;
@@ -170,7 +170,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     }
 
     return this.post(`/${type}/${workspace}/${table}`, text, {
-      ...config,
+      ...cfg,
       headers: { ...headers, 'Content-Type': 'text/plain' },
       params: {
         ...params,
@@ -220,11 +220,11 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
         table,
       },
     });
-  }
+  };
 
   Proto.downloadGraph = function(workspace: string, graph: string): AxiosPromise<any> {
     return this.get(`/workspaces/${workspace}/graphs/${graph}/download`);
-  }
+  };
 
   return axiosInstance as MultinetAxiosInstance;
 }
