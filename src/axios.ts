@@ -13,6 +13,7 @@ import {
   TablesOptionsSpec,
   UserSpec,
   WorkspacePermissionsSpec,
+  WorkspacesSpec,
 } from './index';
 
 function fileToText(file: File): Promise<string> {
@@ -35,7 +36,7 @@ function fileToText(file: File): Promise<string> {
 export interface MultinetAxiosInstance extends AxiosInstance {
   logout(): void;
   userInfo(): AxiosPromise<UserSpec | null>;
-  workspaces(): AxiosPromise<string[]>;
+  workspaces(): AxiosPromise<WorkspacesSpec>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
   setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec>;
   searchUsers(query: string): AxiosPromise<UserSpec[]>;
@@ -72,7 +73,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get('/user/info');
   }
 
-  Proto.workspaces = function(): AxiosPromise<string[]> {
+  Proto.workspaces = function(): AxiosPromise<WorkspacesSpec> {
     return this.get('workspaces');
   };
 
