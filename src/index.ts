@@ -50,6 +50,21 @@ export interface WorkspacePermissionsSpec {
   public: boolean;
 }
 
+export interface Workspace {
+  id: number;
+  name: string;
+  created: string;
+  modified: string;
+  arango_db_name: string;
+}
+
+export interface WorkspacesSpec {
+  count: number;
+  next: number;
+  previous: number;
+  results: Workspace[];
+}
+
 
 export type TableType = 'all' | 'node' | 'edge';
 
@@ -124,7 +139,7 @@ class MultinetAPI {
     return (await this.axios.userInfo()).data;
   }
 
-  public async workspaces(): Promise<string[]> {
+  public async workspaces(): Promise<WorkspacesSpec> {
     return (await this.axios.workspaces()).data;
   }
 
