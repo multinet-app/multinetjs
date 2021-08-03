@@ -9,40 +9,56 @@ export interface Paginated<T> {
   results: T[],
 }
 
+export interface Table {
+  name: string;
+  edge: boolean;
+  id: number;
+  created: string;
+  modified: string;
+  workspace: Workspace[];
+}
+
 export interface TableRow {
   _key: string;
   _id: string;
 }
 
+export interface Graph {
+  id: number;
+  name: string;
+  created: string;
+  modified: string;
+}
+
 export interface GraphSpec {
-  edgeTable: string;
-  nodeTables: string[];
+  id: number;
+  name: string;
+  node_count: number;
+  edge_count: number;
+  created: string;
+  modified: string;
+  workspace: Workspace;
 }
 
-export interface NodesSpec {
-  count: number;
-  nodes: TableRow[];
-}
-
-export interface RowsSpec {
-  count: number;
-  rows: TableRow[];
-}
 
 export interface Edge {
-  edge: string;
   from: string;
   to: string;
 }
 
 export interface EdgesSpec {
-  count: number;
-  edges: Edge[];
+  _key: string;
+  _id: string;
+  _from: string;
+  _to: string;
+  _rev: string;
 }
 
 export interface UserSpec {
-  family_name: string;
-  given_name: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  admin: boolean;
   name: string;
   picture: string;
   email: string;
@@ -166,15 +182,15 @@ class MultinetAPI {
     return (await this.axios.searchUsers(query)).data;
   }
 
-  public async tables(workspace: string, options: TablesOptionsSpec = {}): Promise<string[]> {
+  public async tables(workspace: string, options: TablesOptionsSpec = {}): Promise<Paginated<Table>> {
     return (await this.axios.tables(workspace, options)).data;
   }
 
-  public async table(workspace: string, table: string, options: OffsetLimitSpec = {}): Promise<RowsSpec> {
+  public async table(workspace: string, table: string, options: OffsetLimitSpec = {}): Promise<Paginated<TableRow>> {
     return (await this.axios.table(workspace, table, options)).data;
   }
 
-  public async graphs(workspace: string): Promise<string[]> {
+  public async graphs(workspace: string): Promise<Paginated<Graph>> {
     return (await this.axios.graphs(workspace)).data;
   }
 
@@ -182,7 +198,7 @@ class MultinetAPI {
     return (await this.axios.graph(workspace, graph)).data;
   }
 
-  public async nodes(workspace: string, graph: string, options: OffsetLimitSpec = {}): Promise<NodesSpec> {
+  public async nodes(workspace: string, graph: string, options: OffsetLimitSpec = {}): Promise<Paginated<TableRow>> {
     return (await this.axios.nodes(workspace, graph, options)).data;
   }
 
@@ -190,7 +206,7 @@ class MultinetAPI {
     return (await this.axios.attributes(workspace, graph, nodeId)).data;
   }
 
-  public async edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): Promise<EdgesSpec> {
+  public async edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): Promise<Paginated<EdgesSpec>> {
     return (await this.axios.edges(workspace, graph, nodeId, options)).data;
   }
 
@@ -234,7 +250,7 @@ class MultinetAPI {
     return types;
   }
 
-  public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<string> {
+  public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<CreateGraphOptionsSpec> {
     return (await this.axios.createGraph(workspace, graph, options)).data;
   }
 

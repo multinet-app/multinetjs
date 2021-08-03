@@ -6,12 +6,13 @@ import {
   FileUploadOptionsSpec,
   EdgesSpec,
   EdgesOptionsSpec,
-  NodesSpec,
+  Graph,
   OffsetLimitSpec,
   Paginated,
   GraphSpec,
-  RowsSpec,
+  TableRow,
   TablesOptionsSpec,
+  Table,
   UserSpec,
   WorkspacePermissionsSpec,
   Workspace,
@@ -41,13 +42,13 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
   setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec>;
   searchUsers(query: string): AxiosPromise<UserSpec[]>;
-  tables(workspace: string, options: TablesOptionsSpec): AxiosPromise<string[]>;
-  table(workspace: string, table: string, options: OffsetLimitSpec): AxiosPromise<RowsSpec>;
-  graphs(workspace: string): AxiosPromise<string[]>;
+  tables(workspace: string, options: TablesOptionsSpec): AxiosPromise<Paginated<Table>>;
+  table(workspace: string, table: string, options: OffsetLimitSpec): AxiosPromise<Paginated<TableRow>>;
+  graphs(workspace: string): AxiosPromise<Paginated<Graph>>;
   graph(workspace: string, graph: string): AxiosPromise<GraphSpec>;
-  nodes(workspace: string, graph: string, options: OffsetLimitSpec): AxiosPromise<NodesSpec>;
+  nodes(workspace: string, graph: string, options: OffsetLimitSpec): AxiosPromise<Paginated<TableRow>>;
   attributes(workspace: string, graph: string, nodeId: string): AxiosPromise<{}>;
-  edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec): AxiosPromise<EdgesSpec>;
+  edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec): AxiosPromise<Paginated<EdgesSpec>>;
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
   renameWorkspace(workspace: string, name: string): AxiosPromise<any>;
@@ -55,7 +56,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   downloadTable(workspace: string, table: string): AxiosPromise<any>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
   tableMetadata(workspace: string, table: string): AxiosPromise<TableMetadata>;
-  createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): AxiosPromise<string>;
+  createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): AxiosPromise<CreateGraphOptionsSpec>;
   deleteGraph(workspace: string, graph: string): AxiosPromise<string>;
   aql(workspace: string, query: string): AxiosPromise<any[]>;
   createAQLTable(workspace: string, table: string, query: string): AxiosPromise<any[]>;
@@ -96,19 +97,19 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.tables = function(workspace: string, options: TablesOptionsSpec = {}): AxiosPromise<string[]> {
+  Proto.tables = function(workspace: string, options: TablesOptionsSpec = {}): AxiosPromise<Paginated<Table>> {
     return this.get(`workspaces/${workspace}/tables`, {
       params: options,
     });
   };
 
-  Proto.table = function(workspace: string, table: string, options: OffsetLimitSpec = {}): AxiosPromise<RowsSpec> {
+  Proto.table = function(workspace: string, table: string, options: OffsetLimitSpec = {}): AxiosPromise<Paginated<TableRow>> {
     return this.get(`workspaces/${workspace}/tables/${table}`, {
       params: options,
     });
   };
 
-  Proto.graphs = function(workspace: string): AxiosPromise<string[]> {
+  Proto.graphs = function(workspace: string): AxiosPromise<Paginated<Graph>> {
     return this.get(`workspaces/${workspace}/graphs`);
   };
 
@@ -116,7 +117,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/graphs/${graph}`);
   };
 
-  Proto.nodes = function(workspace: string, graph: string, options: OffsetLimitSpec = {}): AxiosPromise<NodesSpec> {
+  Proto.nodes = function(workspace: string, graph: string, options: OffsetLimitSpec = {}): AxiosPromise<Paginated<TableRow>> {
     return this.get(`workspaces/${workspace}/graphs/${graph}/nodes`, {
       params: options,
     });
@@ -126,7 +127,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/attributes`);
   };
 
-  Proto.edges = function(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): AxiosPromise<EdgesSpec> {
+  Proto.edges = function(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): AxiosPromise<Paginated<EdgesSpec>> {
     return this.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/edges`, {
       params: options,
     });
@@ -195,7 +196,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`/workspaces/${workspace}/tables/${table}/metadata`);
   };
 
-  Proto.createGraph = function(workspace: string, graph: string, options: CreateGraphOptionsSpec): AxiosPromise<string> {
+  Proto.createGraph = function(workspace: string, graph: string, options: CreateGraphOptionsSpec): AxiosPromise<CreateGraphOptionsSpec> {
     return this.post(`/workspaces/${workspace}/graphs/${graph}`, {
       edge_table: options.edgeTable,
     });
