@@ -2,6 +2,13 @@ import { multinetAxiosInstance, MultinetAxiosInstance } from './axios';
 
 import axios, { AxiosRequestConfig } from 'axios';
 
+export interface Paginated<T> {
+  count: number,
+  next: string,
+  previous: string,
+  results: T[],
+}
+
 export interface TableRow {
   _key: string;
   _id: string;
@@ -49,6 +56,15 @@ export interface WorkspacePermissionsSpec {
   readers: UserSpec[];
   public: boolean;
 }
+
+export interface Workspace {
+  id: number;
+  name: string;
+  created: string;
+  modified: string;
+  arango_db_name: string;
+}
+
 
 
 export type TableType = 'all' | 'node' | 'edge';
@@ -124,7 +140,7 @@ class MultinetAPI {
     return (await this.axios.userInfo()).data;
   }
 
-  public async workspaces(): Promise<string[]> {
+  public async workspaces(): Promise<Paginated<Workspace>> {
     return (await this.axios.workspaces()).data;
   }
 
