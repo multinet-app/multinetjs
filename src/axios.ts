@@ -8,12 +8,13 @@ import {
   EdgesOptionsSpec,
   NodesSpec,
   OffsetLimitSpec,
+  Paginated,
   GraphSpec,
   RowsSpec,
   TablesOptionsSpec,
   UserSpec,
   WorkspacePermissionsSpec,
-  WorkspacesSpec,
+  Workspace,
 } from './index';
 
 function fileToText(file: File): Promise<string> {
@@ -36,7 +37,7 @@ function fileToText(file: File): Promise<string> {
 export interface MultinetAxiosInstance extends AxiosInstance {
   logout(): void;
   userInfo(): AxiosPromise<UserSpec | null>;
-  workspaces(): AxiosPromise<WorkspacesSpec>;
+  workspaces(): AxiosPromise<Paginated<Workspace>>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
   setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec>;
   searchUsers(query: string): AxiosPromise<UserSpec[]>;
@@ -73,7 +74,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get('/user/info');
   };
 
-  Proto.workspaces = function(): AxiosPromise<WorkspacesSpec> {
+  Proto.workspaces = function(): AxiosPromise<Paginated<Workspace>> {
     return this.get('workspaces');
   };
 
