@@ -41,7 +41,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   workspaces(): AxiosPromise<Paginated<Workspace>>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
   setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec>;
-  searchUsers(query: string): AxiosPromise<UserSpec[]>;
+  searchUsers(username: string): AxiosPromise<UserSpec[]>;
   tables(workspace: string, options: TablesOptionsSpec): AxiosPromise<Paginated<Table>>;
   table(workspace: string, table: string, options: OffsetLimitSpec): AxiosPromise<Paginated<TableRow>>;
   graphs(workspace: string): AxiosPromise<Paginated<Graph>>;
@@ -89,10 +89,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.searchUsers = function(query: string): AxiosPromise<UserSpec[]> {
-    return this.get('/user/search', {
+  Proto.searchUsers = function(username: string): AxiosPromise<UserSpec[]> {
+    return this.get('/users/search', {
       params: {
-        query,
+        username,
       },
     });
   };
@@ -104,37 +104,39 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.table = function(workspace: string, table: string, options: OffsetLimitSpec = {}): AxiosPromise<Paginated<TableRow>> {
-    return this.get(`workspaces/${workspace}/tables/${table}`, {
+    return this.get(`workspaces/${workspace}/tables/${table}/rows`, {
       params: options,
     });
   };
 
   Proto.graphs = function(workspace: string): AxiosPromise<Paginated<Graph>> {
-    return this.get(`workspaces/${workspace}/graphs`);
+    return this.get(`workspaces/${workspace}/networks`);
   };
 
   Proto.graph = function(workspace: string, graph: string): AxiosPromise<GraphSpec> {
-    return this.get(`workspaces/${workspace}/graphs/${graph}`);
+    return this.get(`workspaces/${workspace}/networks/${graph}`);
   };
 
   Proto.nodes = function(workspace: string, graph: string, options: OffsetLimitSpec = {}): AxiosPromise<Paginated<TableRow>> {
-    return this.get(`workspaces/${workspace}/graphs/${graph}/nodes`, {
+    return this.get(`workspaces/${workspace}/networks/${graph}/nodes`, {
       params: options,
     });
   };
 
   Proto.attributes = function(workspace: string, graph: string, nodeId: string): AxiosPromise<{}> {
-    return this.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/attributes`);
+    return this.get(`workspaces/${workspace}/networks/${graph}/nodes/${nodeId}/attributes`);
   };
 
   Proto.edges = function(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): AxiosPromise<Paginated<EdgesSpec>> {
-    return this.get(`workspaces/${workspace}/graphs/${graph}/nodes/${nodeId}/edges`, {
+    return this.get(`workspaces/${workspace}/networks/${graph}/nodes/${nodeId}/edges`, {
       params: options,
     });
   };
 
   Proto.createWorkspace = function(workspace: string): AxiosPromise<string> {
-    return this.post(`/workspaces/${workspace}`);
+    return this.post(`/workspaces/`, {
+      name: workspace,
+    });
   };
 
   Proto.deleteWorkspace = function(workspace: string): AxiosPromise<string> {
@@ -197,13 +199,14 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.createGraph = function(workspace: string, graph: string, options: CreateGraphOptionsSpec): AxiosPromise<CreateGraphOptionsSpec> {
-    return this.post(`/workspaces/${workspace}/graphs/${graph}`, {
+    return this.post(`/workspaces/${workspace}/networks/`, {
+      name: graph,
       edge_table: options.edgeTable,
     });
   };
 
   Proto.deleteGraph = function(workspace: string, graph: string): AxiosPromise<string> {
-    return this.delete(`/workspaces/${workspace}/graphs/${graph}`);
+    return this.delete(`/workspaces/${workspace}/networks/${graph}`);
   };
 
   Proto.aql = function(workspace: string, query: string): AxiosPromise<any[]> {

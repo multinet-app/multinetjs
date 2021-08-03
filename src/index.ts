@@ -178,8 +178,8 @@ class MultinetAPI {
     return (await this.axios.setWorkspacePermissions(workspace, permissions)).data;
   }
 
-  public async searchUsers(query: string): Promise<UserSpec[]> {
-    return (await this.axios.searchUsers(query)).data;
+  public async searchUsers(username: string): Promise<UserSpec[]> {
+    return (await this.axios.searchUsers(username)).data;
   }
 
   public async tables(workspace: string, options: TablesOptionsSpec = {}): Promise<Paginated<Table>> {
