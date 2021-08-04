@@ -128,7 +128,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.edges = function(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): AxiosPromise<Paginated<EdgesSpec>> {
-    return this.get(`workspaces/${workspace}/networks/${graph}/nodes/${nodeId}/edges`, {
+    return this.get(`workspaces/${workspace}/networks/${graph}/edges`, {
       params: options,
     });
   };
