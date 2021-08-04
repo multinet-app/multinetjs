@@ -72,7 +72,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.userInfo = function(): AxiosPromise<UserSpec | null> {
-    return this.get('/user/info');
+    return this.get('/users/me');
   };
 
   Proto.workspaces = function(): AxiosPromise<Paginated<Workspace>> {
