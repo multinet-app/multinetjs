@@ -47,7 +47,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   graphs(workspace: string): AxiosPromise<Paginated<Graph>>;
   graph(workspace: string, graph: string): AxiosPromise<GraphSpec>;
   nodes(workspace: string, graph: string, options: OffsetLimitSpec): AxiosPromise<Paginated<TableRow>>;
-  edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec): AxiosPromise<Paginated<EdgesSpec>>;
+  edges(workspace: string, graph: string, options: EdgesOptionsSpec): AxiosPromise<Paginated<EdgesSpec>>;
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
   renameWorkspace(workspace: string, name: string): AxiosPromise<any>;

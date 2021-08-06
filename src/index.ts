@@ -197,8 +197,8 @@ class MultinetAPI {
     return (await this.axios.nodes(workspace, graph, options)).data;
   }
 
-  public async edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): Promise<Paginated<EdgesSpec>> {
-    return (await this.axios.edges(workspace, graph, nodeId, options)).data;
+  public async edges(workspace: string, graph: string, options: EdgesOptionsSpec = {}): Promise<Paginated<EdgesSpec>> {
+    return (await this.axios.edges(workspace, graph, options)).data;
   }
 
   public async createWorkspace(workspace: string): Promise<string> {
