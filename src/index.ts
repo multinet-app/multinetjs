@@ -40,12 +40,6 @@ export interface GraphSpec {
   workspace: Workspace;
 }
 
-
-export interface Edge {
-  from: string;
-  to: string;
-}
-
 export interface EdgesSpec {
   _key: string;
   _id: string;
@@ -200,10 +194,6 @@ class MultinetAPI {
 
   public async nodes(workspace: string, graph: string, options: OffsetLimitSpec = {}): Promise<Paginated<TableRow>> {
     return (await this.axios.nodes(workspace, graph, options)).data;
-  }
-
-  public async attributes(workspace: string, graph: string, nodeId: string): Promise<{}> {
-    return (await this.axios.attributes(workspace, graph, nodeId)).data;
   }
 
   public async edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): Promise<Paginated<EdgesSpec>> {

@@ -47,7 +47,6 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   graphs(workspace: string): AxiosPromise<Paginated<Graph>>;
   graph(workspace: string, graph: string): AxiosPromise<GraphSpec>;
   nodes(workspace: string, graph: string, options: OffsetLimitSpec): AxiosPromise<Paginated<TableRow>>;
-  attributes(workspace: string, graph: string, nodeId: string): AxiosPromise<{}>;
   edges(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec): AxiosPromise<Paginated<EdgesSpec>>;
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
@@ -123,11 +122,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.attributes = function(workspace: string, graph: string, nodeId: string): AxiosPromise<{}> {
-    return this.get(`workspaces/${workspace}/networks/${graph}/nodes/${nodeId}/attributes`);
-  };
-
-  Proto.edges = function(workspace: string, graph: string, nodeId: string, options: EdgesOptionsSpec = {}): AxiosPromise<Paginated<EdgesSpec>> {
+  Proto.edges = function(workspace: string, graph: string, options: EdgesOptionsSpec = {}): AxiosPromise<Paginated<EdgesSpec>> {
     return this.get(`workspaces/${workspace}/networks/${graph}/edges`, {
       params: options,
     });
