@@ -4,8 +4,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 export interface Paginated<T> {
   count: number,
-  next: string,
-  previous: string,
+  next: string | null,
+  previous: string | null,
   results: T[],
 }
 
@@ -15,12 +15,13 @@ export interface Table {
   id: number;
   created: string;
   modified: string;
-  workspace: Workspace[];
+  workspace: Workspace;
 }
 
 export interface TableRow {
   _key: string;
   _id: string;
+  _rev: string;
 }
 
 export interface Graph {
