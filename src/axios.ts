@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import S3FileFieldClient, { S3FileFieldProgress, S3FileFieldProgressState } from 'django-s3-file-field';
 
 import {
   CreateGraphOptionsSpec,
@@ -146,18 +147,19 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.uploadTable = async function(workspace: string, table: string, options: FileUploadOptionsSpec, cfg?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
-    const headers = cfg ? cfg.headers : undefined;
-    const params = cfg ? cfg.params : undefined;
-    const { type, data, key, overwrite, columnTypes } = options;
-
-    let text;
-
-    if (typeof data === 'string') {
-      text = data;
-    } else {
-      text = await fileToText(data);
-    }
+  Proto.uploadTable = async function(workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
+    const headers = config ? config.headers : undefined;
+    const params = config ? config.params : undefined;
+    const { data, edgeTable, url, key, overwrite, columnTypes } = options;
+    const s3ffClient = new S3FileFieldClient({
+      baseUrl: `${url}/api/s3-upload/`,
+      apiConfig: this.defaults,
+    });
+    
+    const fieldValue = await s3ffClient.uploadFile(
+      data as File,
+      'api.Upload.blob'
+    );
 
     let metadata;
     if (columnTypes) {
@@ -169,8 +171,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       metadata = { columns };
     }
 
-    return this.post(`/${type}/${workspace}/${table}`, text, {
-      ...cfg,
+    return this.post(`/workspaces/${workspace}/uploads/csv/`, {
+      ...config,
       headers: { ...headers, 'Content-Type': 'text/plain' },
       params: {
         ...params,
@@ -178,6 +180,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
         overwrite: overwrite || undefined,
         metadata: metadata || undefined,
       },
+      field_value: fieldValue.value,
+      edge: edgeTable,
+      table_name: table,
+      columns: columnTypes
     });
   };
 
