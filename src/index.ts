@@ -243,6 +243,10 @@ class MultinetAPI {
     return types;
   }
 
+  public async uploadNetwork(workspace: string, network: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<Array<{}>> {
+    return (await this.axios.uploadNetwork(workspace, network, options, config)).data;
+  }
+
   public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<CreateGraphOptionsSpec> {
     return (await this.axios.createGraph(workspace, graph, options)).data;
   }
