@@ -151,9 +151,9 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   Proto.uploadTable = async function(workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
-    const { data, edgeTable, url, key, overwrite, columnTypes } = options;
+    const { data, edgeTable, key, overwrite, columnTypes } = options;
     const s3ffClient = new S3FileFieldClient({
-      baseUrl: `${url}/api/s3-upload/`,
+      baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
     });
     
@@ -203,9 +203,9 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   Proto.uploadNetwork = async function(workspace: string, network: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
-    const { type, data, url } = options;
+    const { type, data } = options;
     const s3ffClient = new S3FileFieldClient({
-      baseUrl: `${url}/api/s3-upload/`,
+      baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       // onProgress: onUploadProgress, // This argument is optional
       apiConfig: this.defaults,
     });

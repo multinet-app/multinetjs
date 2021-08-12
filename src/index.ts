@@ -124,7 +124,6 @@ export interface TableMetadata {
 export interface FileUploadOptionsSpec {
   type: UploadType;
   data: File;
-  url: string;
   edgeTable?: boolean;
   key?: string;
   overwrite?: boolean;
