@@ -4,7 +4,8 @@ import S3FileFieldClient, { S3FileFieldProgress, S3FileFieldProgressState } from
 import {
   CreateGraphOptionsSpec,
   TableMetadata,
-  FileUploadOptionsSpec,
+  TableUploadOptionsSpec,
+  NetworkUploadOptionsSpec,
   EdgesSpec,
   EdgesOptionsSpec,
   Graph,
@@ -52,11 +53,11 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
   renameWorkspace(workspace: string, name: string): AxiosPromise<any>;
-  uploadTable(workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
+  uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   downloadTable(workspace: string, table: string): AxiosPromise<any>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
   tableMetadata(workspace: string, table: string): AxiosPromise<TableMetadata>;
-  uploadNetwork(workspace: string, network: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
+  uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): AxiosPromise<CreateGraphOptionsSpec>;
   deleteGraph(workspace: string, graph: string): AxiosPromise<string>;
   aql(workspace: string, query: string): AxiosPromise<any[]>;
@@ -148,10 +149,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.uploadTable = async function(workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
+  Proto.uploadTable = async function(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
-    const { data, edgeTable, key, overwrite, columnTypes } = options;
+    const { data, edgeTable, columnTypes } = options;
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
@@ -177,8 +178,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       headers: { ...headers, 'Content-Type': 'text/plain' },
       params: {
         ...params,
-        key: key || undefined,
-        overwrite: overwrite || undefined,
         metadata: metadata || undefined,
       },
       field_value: fieldValue.value,
@@ -200,7 +199,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`/workspaces/${workspace}/tables/${table}/metadata`);
   };
 
-  Proto.uploadNetwork = async function(workspace: string, network: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
+  Proto.uploadNetwork = async function(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
     const headers = config ? config.headers : undefined;
     const params = config ? config.params : undefined;
     const { type, data } = options;

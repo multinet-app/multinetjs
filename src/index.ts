@@ -121,15 +121,18 @@ export interface TableMetadata {
   };
 }
 
-export interface FileUploadOptionsSpec {
+export interface TableUploadOptionsSpec {
   type: UploadType;
   data: File;
-  edgeTable?: boolean;
-  key?: string;
-  overwrite?: boolean;
+  edgeTable: boolean;
   columnTypes?: {
     [key: string]: ColumnType;
   };
+}
+
+export interface NetworkUploadOptionsSpec {
+  data: File;
+  type: GraphUploadType;
 }
 
 export interface CreateGraphOptionsSpec {
@@ -215,7 +218,7 @@ class MultinetAPI {
   }
 
   public async uploadTable(
-    workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig
+    workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig
   ): Promise<Array<{}>> {
     return (await this.axios.uploadTable(workspace, table, options, config)).data;
   }
@@ -242,7 +245,7 @@ class MultinetAPI {
     return types;
   }
 
-  public async uploadNetwork(workspace: string, network: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig): Promise<Array<{}>> {
+  public async uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): Promise<Array<{}>> {
     return (await this.axios.uploadNetwork(workspace, network, options, config)).data;
   }
 
