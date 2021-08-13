@@ -2,13 +2,11 @@ name: CI
 
 on:
   pull_request:
-    branches:
-      - master
-
   push:
+    # Run CI on all branch pushes. Must use this syntax,
+    # as we also need to run CI on tag pushes.
     branches:
-      - master
-
+      - "**"
     tags:
       - v[0-9]+.[0-9]+.[0-9]+*
 
