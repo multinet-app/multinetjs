@@ -53,11 +53,13 @@ export interface UserSpec {
   username: string;
   first_name: string;
   last_name: string;
-  admin: boolean;
-  name: string;
-  picture: string;
+  is_superuser: boolean;
   email: string;
-  sub: string;
+  id: number;
+}
+
+export interface MinimumUserSpec {
+  username: string;
 }
 
 export interface WorkspacePermissionsSpec {
@@ -65,6 +67,15 @@ export interface WorkspacePermissionsSpec {
   maintainers: UserSpec[];
   writers: UserSpec[];
   readers: UserSpec[];
+  public: boolean;
+}
+
+export interface WorkspacePermissionRequestSpec {
+  /* In order to set permissions, the API only needs usernames */
+  owner: MinimumUserSpec;
+  maintainers: MinimumUserSpec[];
+  writers: MinimumUserSpec[];
+  readers: MinimumUserSpec[];
   public: boolean;
 }
 
