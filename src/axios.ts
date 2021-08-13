@@ -161,16 +161,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       'api.Upload.blob'
     );
 
-    let metadata;
-    if (columnTypes) {
-      const columns = Object.keys(columnTypes).map((column) => ({
-        key: column,
-        type: columnTypes[column],
-      }));
-
-      metadata = { columns };
-    }
-
     return this.post(`/workspaces/${workspace}/uploads/csv/`, {
       field_value: fieldValue.value,
       edge: edgeTable,
