@@ -58,24 +58,11 @@ export interface UserSpec {
   id: number;
 }
 
-export interface MinimumUserSpec {
-  username: string;
-}
-
 export interface WorkspacePermissionsSpec {
   owner: UserSpec;
   maintainers: UserSpec[];
   writers: UserSpec[];
   readers: UserSpec[];
-  public: boolean;
-}
-
-export interface WorkspacePermissionRequestSpec {
-  /* In order to set permissions, the API only needs usernames */
-  owner: MinimumUserSpec;
-  maintainers: MinimumUserSpec[];
-  writers: MinimumUserSpec[];
-  readers: MinimumUserSpec[];
   public: boolean;
 }
 

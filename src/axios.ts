@@ -15,7 +15,6 @@ import {
   Table,
   UserSpec,
   WorkspacePermissionsSpec,
-  WorkspacePermissionRequestSpec,
   Workspace,
 } from './index';
 
@@ -83,7 +82,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/permissions/`);
   };
 
-  Proto.setWorkspacePermissions = function(workspace: string, permissions: WorkspacePermissionRequestSpec): AxiosPromise<WorkspacePermissionRequestSpec> {
+  Proto.setWorkspacePermissions = function(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec> {
     return this.put(`workspaces/${workspace}/permissions/`, permissions)
   };
 
