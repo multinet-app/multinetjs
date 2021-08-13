@@ -82,8 +82,16 @@ export type TableUploadType = 'csv';
 export type GraphUploadType = 'nested_json' | 'newick' | 'd3_json';
 export type UploadType = TableUploadType | GraphUploadType;
 
+export function validTableUploadType(type: string): type is TableUploadType {
+  return type === 'csv';
+}
+
+export function validGraphUploadType(type: string): type is GraphUploadType {
+  return ['nested_json', 'newick', 'd3_json'].includes(type);
+}
+
 export function validUploadType(type: string): type is UploadType {
-  return ['csv', 'nested_json', 'newick', 'd3_json'].includes(type);
+  return validTableUploadType(type) || validGraphUploadType(type);
 }
 
 export type Direction = 'all' | 'incoming' | 'outgoing';
