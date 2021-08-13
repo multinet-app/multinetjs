@@ -1,7 +1,5 @@
 import { multinetAxiosInstance, MultinetAxiosInstance } from './axios';
 
-import axios, { AxiosRequestConfig } from 'axios';
-
 export interface Paginated<T> {
   count: number,
   next: string | null,
@@ -217,10 +215,8 @@ class MultinetAPI {
     return (await this.axios.renameWorkspace(workspace, name)).data;
   }
 
-  public async uploadTable(
-    workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig
-  ): Promise<Array<{}>> {
-    return (await this.axios.uploadTable(workspace, table, options, config)).data;
+  public async uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec): Promise<Array<{}>> {
+    return (await this.axios.uploadTable(workspace, table, options)).data;
   }
 
   public async downloadTable(workspace: string, table: string): Promise<any> {
@@ -245,8 +241,8 @@ class MultinetAPI {
     return types;
   }
 
-  public async uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): Promise<Array<{}>> {
-    return (await this.axios.uploadNetwork(workspace, network, options, config)).data;
+  public async uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<Array<{}>> {
+    return (await this.axios.uploadNetwork(workspace, network, options)).data;
   }
 
   public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<CreateGraphOptionsSpec> {

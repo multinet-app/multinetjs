@@ -149,9 +149,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.uploadTable = async function(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
-    const headers = config ? config.headers : undefined;
-    const params = config ? config.params : undefined;
+  Proto.uploadTable = async function(workspace: string, table: string, options: TableUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
     const { data, edgeTable, columnTypes } = options;
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
@@ -174,12 +172,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     }
 
     return this.post(`/workspaces/${workspace}/uploads/csv/`, {
-      ...config,
-      headers: { ...headers, 'Content-Type': 'text/plain' },
-      params: {
-        ...params,
-        metadata: metadata || undefined,
-      },
       field_value: fieldValue.value,
       edge: edgeTable,
       table_name: table,
@@ -199,13 +191,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`/workspaces/${workspace}/tables/${table}/metadata`);
   };
 
-  Proto.uploadNetwork = async function(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): Promise<AxiosResponse<Array<{}>>> {
-    const headers = config ? config.headers : undefined;
-    const params = config ? config.params : undefined;
+  Proto.uploadNetwork = async function(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
     const { type, data } = options;
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
-      // onProgress: onUploadProgress, // This argument is optional
       apiConfig: this.defaults,
     });
 
@@ -215,9 +204,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     );
 
     return this.post(`/workspaces/${workspace}/uploads/${type}/`, {
-      ...config,
-      headers: { ...headers, 'Content-Type': 'text/plain' },
-      ...params,
       field_value: fieldValue.value,
       network_name: network
     });
