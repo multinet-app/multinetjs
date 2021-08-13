@@ -3,6 +3,8 @@ name: CI
 on:
   pull_request:
   push:
+    # Run CI on all branch pushes. Must use this syntax,
+    # as we also need to run CI on tag pushes.
     branches:
       - "**"
     tags:
