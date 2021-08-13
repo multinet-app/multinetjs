@@ -128,7 +128,6 @@ export interface TableMetadata {
 }
 
 export interface TableUploadOptionsSpec {
-  type: UploadType;
   data: File;
   edgeTable: boolean;
   columnTypes?: {
