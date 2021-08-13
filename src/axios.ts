@@ -156,10 +156,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       apiConfig: this.defaults,
     });
     
-    const fieldValue = await s3ffClient.uploadFile(
-      data as File,
-      'api.Upload.blob'
-    );
+    const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
     return this.post(`/workspaces/${workspace}/uploads/csv/`, {
       field_value: fieldValue.value,
@@ -188,10 +185,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       apiConfig: this.defaults,
     });
 
-    const fieldValue = await s3ffClient.uploadFile(
-      data as File,
-      'api.Upload.blob'
-    );
+    const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
     return this.post(`/workspaces/${workspace}/uploads/${type}/`, {
       field_value: fieldValue.value,
