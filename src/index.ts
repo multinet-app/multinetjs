@@ -1,7 +1,5 @@
 import { multinetAxiosInstance, MultinetAxiosInstance } from './axios';
 
-import axios, { AxiosRequestConfig } from 'axios';
-
 export interface Paginated<T> {
   count: number,
   next: string | null,
@@ -82,8 +80,16 @@ export type TableUploadType = 'csv';
 export type GraphUploadType = 'nested_json' | 'newick' | 'd3_json';
 export type UploadType = TableUploadType | GraphUploadType;
 
+export function validTableUploadType(type: string): type is TableUploadType {
+  return type === 'csv';
+}
+
+export function validGraphUploadType(type: string): type is GraphUploadType {
+  return ['nested_json', 'newick', 'd3_json'].includes(type);
+}
+
 export function validUploadType(type: string): type is UploadType {
-  return ['csv', 'nested_json', 'newick', 'd3_json'].includes(type);
+  return validTableUploadType(type) || validGraphUploadType(type);
 }
 
 export type Direction = 'all' | 'incoming' | 'outgoing';
@@ -119,14 +125,17 @@ export interface TableMetadata {
   };
 }
 
-export interface FileUploadOptionsSpec {
-  type: UploadType;
-  data: string | File;
-  key?: string;
-  overwrite?: boolean;
+export interface TableUploadOptionsSpec {
+  data: File;
+  edgeTable: boolean;
   columnTypes?: {
     [key: string]: ColumnType;
   };
+}
+
+export interface NetworkUploadOptionsSpec {
+  data: File;
+  type: GraphUploadType;
 }
 
 export interface CreateGraphOptionsSpec {
@@ -211,10 +220,8 @@ class MultinetAPI {
     return (await this.axios.renameWorkspace(workspace, name)).data;
   }
 
-  public async uploadTable(
-    workspace: string, table: string, options: FileUploadOptionsSpec, config?: AxiosRequestConfig
-  ): Promise<Array<{}>> {
-    return (await this.axios.uploadTable(workspace, table, options, config)).data;
+  public async uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec): Promise<Array<{}>> {
+    return (await this.axios.uploadTable(workspace, table, options)).data;
   }
 
   public async downloadTable(workspace: string, table: string): Promise<any> {
@@ -237,6 +244,10 @@ class MultinetAPI {
       types[entry.key] = entry.type;
     });
     return types;
+  }
+
+  public async uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<Array<{}>> {
+    return (await this.axios.uploadNetwork(workspace, network, options)).data;
   }
 
   public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<CreateGraphOptionsSpec> {

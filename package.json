@@ -25,6 +25,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "axios": "^0.21.1",
+    "django-s3-file-field": "^0.1.2",
     "ts-jest": "^26.5.4"
   },
   "devDependencies": {
