@@ -79,13 +79,11 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.getWorkspacePermissions = function(workspace: string): AxiosPromise<WorkspacePermissionsSpec> {
-    return this.get(`workspaces/${workspace}/permissions`);
+    return this.get(`workspaces/${workspace}/permissions/`);
   };
 
   Proto.setWorkspacePermissions = function(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec> {
-    return this.put(`workspaces/${workspace}/permissions`, {
-      params: permissions,
-    });
+    return this.put(`workspaces/${workspace}/permissions/`, permissions)
   };
 
   Proto.searchUsers = function(username: string): AxiosPromise<UserSpec[]> {

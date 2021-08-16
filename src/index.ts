@@ -53,11 +53,9 @@ export interface UserSpec {
   username: string;
   first_name: string;
   last_name: string;
-  admin: boolean;
-  name: string;
-  picture: string;
+  is_superuser: boolean;
   email: string;
-  sub: string;
+  id: number;
 }
 
 export interface WorkspacePermissionsSpec {
