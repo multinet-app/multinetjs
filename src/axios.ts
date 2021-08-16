@@ -15,6 +15,7 @@ import {
   TableRow,
   TablesOptionsSpec,
   Table,
+  UserPermissionSpec,
   UserSpec,
   WorkspacePermissionsSpec,
   Workspace,
@@ -42,6 +43,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   userInfo(): AxiosPromise<UserSpec | null>;
   workspaces(): AxiosPromise<Paginated<Workspace>>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
+  getCurrentUserWorkspacePermissions(workspace: string): AxiosPromise<UserPermissionSpec>
   setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec>;
   searchUsers(username: string): AxiosPromise<UserSpec[]>;
   tables(workspace: string, options: TablesOptionsSpec): AxiosPromise<Paginated<Table>>;
@@ -84,6 +86,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   Proto.getWorkspacePermissions = function(workspace: string): AxiosPromise<WorkspacePermissionsSpec> {
     return this.get(`workspaces/${workspace}/permissions/`);
   };
+
+  Proto.getCurrentUserWorkspacePermissions = function(workspace: string): AxiosPromise<UserPermissionSpec> {
+    return this.get(`workspaces/${workspace}/permissions/me/`);
+  }
 
   Proto.setWorkspacePermissions = function(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec> {
     return this.put(`workspaces/${workspace}/permissions/`, permissions)
@@ -153,7 +159,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
     });
-    
+
     const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
     return this.post(`/workspaces/${workspace}/uploads/csv/`, {

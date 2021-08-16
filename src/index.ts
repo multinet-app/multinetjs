@@ -56,6 +56,12 @@ export interface UserSpec {
   id: number;
 }
 
+export interface UserPermissionSpec {
+  username: string;
+  workspace: string;
+  permission: string;
+}
+
 export interface WorkspacePermissionsSpec {
   owner: UserSpec;
   maintainers: UserSpec[];
