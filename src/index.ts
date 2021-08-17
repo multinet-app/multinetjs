@@ -176,6 +176,14 @@ class MultinetAPI {
     return (await this.axios.getWorkspacePermissions(workspace)).data;
   }
 
+  public async getCurrentUserWorkspacePermissions(workspace: string): Promise<UserPermissionSpec> {
+    if (!workspace) {
+      throw new Error('argument "workspace" must not be empty');
+    }
+
+    return (await this.axios.getCurrentUserWorkspacePermissions(workspace)).data;
+  }
+
   public async setWorkspacePermissions(
     workspace: string, permissions: WorkspacePermissionsSpec
   ): Promise<WorkspacePermissionsSpec> {
