@@ -140,10 +140,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.renameWorkspace = function(workspace: string, name: string): AxiosPromise<any> {
-    return this.put(`workspaces/${workspace}/name`, null, {
-      params: {
-        name,
-      },
+    return this.put(`workspaces/${workspace}/`, {
+      name,
     });
   };
 
