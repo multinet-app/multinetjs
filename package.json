@@ -9,10 +9,10 @@
     "dist/src/index.d.ts.map",
     "dist/src/index.js",
     "dist/src/index.js.map",
-    "dist/src/types.d.ts",
-    "dist/src/types.d.ts.map",
-    "dist/src/types.js",
-    "dist/src/types.js.map"
+    "dist/src/axios.d.ts",
+    "dist/src/axios.d.ts.map",
+    "dist/src/axios.js",
+    "dist/src/axios.js.map"
   ],
   "scripts": {
     "start": "tsc -w",
