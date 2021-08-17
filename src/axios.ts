@@ -86,7 +86,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.setWorkspacePermissions = function(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec> {
-    return this.put(`workspaces/${workspace}/permissions/`, permissions)
+    return this.put(`workspaces/${workspace}/permissions/`, permissions);
   };
 
   Proto.searchUsers = function(username: string): AxiosPromise<UserSpec[]> {
@@ -153,14 +153,14 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
     });
-    
+
     const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
     return this.post(`/workspaces/${workspace}/uploads/csv/`, {
       field_value: fieldValue.value,
       edge: edgeTable,
       table_name: table,
-      columns: columnTypes
+      columns: columnTypes,
     });
   };
 
@@ -187,7 +187,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
     return this.post(`/workspaces/${workspace}/uploads/${type}/`, {
       field_value: fieldValue.value,
-      network_name: network
+      network_name: network,
     });
   };
 

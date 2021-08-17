@@ -1,10 +1,10 @@
 import { multinetAxiosInstance, MultinetAxiosInstance } from './axios';
 
 export interface Paginated<T> {
-  count: number,
-  next: string | null,
-  previous: string | null,
-  results: T[],
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
 export interface Table {
