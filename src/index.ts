@@ -216,7 +216,7 @@ class MultinetAPI {
     return (await this.axios.deleteWorkspace(workspace)).data;
   }
 
-  public async renameWorkspace(workspace: string, name: string): Promise<any> {
+  public async renameWorkspace(workspace: string, name: string): Promise<Workspace> {
     return (await this.axios.renameWorkspace(workspace, name)).data;
   }
 
