@@ -22,14 +22,14 @@ export interface TableRow {
   _rev: string;
 }
 
-export interface Graph {
+export interface Network {
   id: number;
   name: string;
   created: string;
   modified: string;
 }
 
-export interface GraphSpec {
+export interface NetworkSpec {
   id: number;
   name: string;
   node_count: number;
@@ -77,19 +77,19 @@ export interface Workspace {
 export type TableType = 'all' | 'node' | 'edge';
 
 export type TableUploadType = 'csv';
-export type GraphUploadType = 'nested_json' | 'newick' | 'd3_json';
-export type UploadType = TableUploadType | GraphUploadType;
+export type NetworkUploadType = 'nested_json' | 'newick' | 'd3_json';
+export type UploadType = TableUploadType | NetworkUploadType;
 
 export function validTableUploadType(type: string): type is TableUploadType {
   return type === 'csv';
 }
 
-export function validGraphUploadType(type: string): type is GraphUploadType {
+export function validNetworkUploadType(type: string): type is NetworkUploadType {
   return ['nested_json', 'newick', 'd3_json'].includes(type);
 }
 
 export function validUploadType(type: string): type is UploadType {
-  return validTableUploadType(type) || validGraphUploadType(type);
+  return validTableUploadType(type) || validNetworkUploadType(type);
 }
 
 export type Direction = 'all' | 'incoming' | 'outgoing';
@@ -135,10 +135,10 @@ export interface TableUploadOptionsSpec {
 
 export interface NetworkUploadOptionsSpec {
   data: File;
-  type: GraphUploadType;
+  type: NetworkUploadType;
 }
 
-export interface CreateGraphOptionsSpec {
+export interface CreateNetworkOptionsSpec {
   edgeTable: string;
 }
 
@@ -192,20 +192,20 @@ class MultinetAPI {
     return (await this.axios.table(workspace, table, options)).data;
   }
 
-  public async graphs(workspace: string): Promise<Paginated<Graph>> {
-    return (await this.axios.graphs(workspace)).data;
+  public async networks(workspace: string): Promise<Paginated<Network>> {
+    return (await this.axios.networks(workspace)).data;
   }
 
-  public async graph(workspace: string, graph: string): Promise<GraphSpec> {
-    return (await this.axios.graph(workspace, graph)).data;
+  public async network(workspace: string, network: string): Promise<NetworkSpec> {
+    return (await this.axios.network(workspace, network)).data;
   }
 
-  public async nodes(workspace: string, graph: string, options: OffsetLimitSpec = {}): Promise<Paginated<TableRow>> {
-    return (await this.axios.nodes(workspace, graph, options)).data;
+  public async nodes(workspace: string, network: string, options: OffsetLimitSpec = {}): Promise<Paginated<TableRow>> {
+    return (await this.axios.nodes(workspace, network, options)).data;
   }
 
-  public async edges(workspace: string, graph: string, options: EdgesOptionsSpec = {}): Promise<Paginated<EdgesSpec>> {
-    return (await this.axios.edges(workspace, graph, options)).data;
+  public async edges(workspace: string, network: string, options: EdgesOptionsSpec = {}): Promise<Paginated<EdgesSpec>> {
+    return (await this.axios.edges(workspace, network, options)).data;
   }
 
   public async createWorkspace(workspace: string): Promise<string> {
@@ -250,12 +250,12 @@ class MultinetAPI {
     return (await this.axios.uploadNetwork(workspace, network, options)).data;
   }
 
-  public async createGraph(workspace: string, graph: string, options: CreateGraphOptionsSpec): Promise<CreateGraphOptionsSpec> {
-    return (await this.axios.createGraph(workspace, graph, options)).data;
+  public async createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): Promise<CreateNetworkOptionsSpec> {
+    return (await this.axios.createNetwork(workspace, network, options)).data;
   }
 
-  public async deleteGraph(workspace: string, graph: string): Promise<string> {
-    return (await this.axios.deleteGraph(workspace, graph)).data;
+  public async deleteNetwork(workspace: string, network: string): Promise<string> {
+    return (await this.axios.deleteNetwork(workspace, network)).data;
   }
 
   public async aql(workspace: string, query: string): Promise<any[]> {
@@ -266,8 +266,8 @@ class MultinetAPI {
     return (await this.axios.createAQLTable(workspace, table, query)).data;
   }
 
-  public async downloadGraph(workspace: string, graph: string): Promise<any> {
-    return (await this.axios.downloadGraph(workspace, graph)).data;
+  public async downloadNetwork(workspace: string, network: string): Promise<any> {
+    return (await this.axios.downloadNetwork(workspace, network)).data;
   }
 }
 
