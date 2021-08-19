@@ -56,7 +56,7 @@ export interface UserSpec {
   id: number;
 }
 
-export interface UserPermissionSpec {
+export interface SingleUserWorkspacePermissionSpec {
   username: string;
   workspace: string;
   permission: string;
@@ -176,7 +176,7 @@ class MultinetAPI {
     return (await this.axios.getWorkspacePermissions(workspace)).data;
   }
 
-  public async getCurrentUserWorkspacePermissions(workspace: string): Promise<UserPermissionSpec> {
+  public async getCurrentUserWorkspacePermissions(workspace: string): Promise<SingleUserWorkspacePermissionSpec> {
     if (!workspace) {
       throw new Error('argument "workspace" must not be empty');
     }
