@@ -59,7 +59,7 @@ export interface UserSpec {
 export interface SingleUserWorkspacePermissionSpec {
   username: string;
   workspace: string;
-  permission: string;
+  permission: string | null;
 }
 
 export interface WorkspacePermissionsSpec {
