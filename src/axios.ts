@@ -43,7 +43,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   userInfo(): AxiosPromise<UserSpec | null>;
   workspaces(): AxiosPromise<Paginated<Workspace>>;
   getWorkspacePermissions(workspace: string): AxiosPromise<WorkspacePermissionsSpec>;
-  getCurrentUserWorkspacePermissions(workspace: string): AxiosPromise<SingleUserWorkspacePermissionSpec>
+  getCurrentUserWorkspacePermissions(workspace: string): AxiosPromise<SingleUserWorkspacePermissionSpec>;
   setWorkspacePermissions(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec>;
   searchUsers(username: string): AxiosPromise<UserSpec[]>;
   tables(workspace: string, options: TablesOptionsSpec): AxiosPromise<Paginated<Table>>;
@@ -89,7 +89,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
   Proto.getCurrentUserWorkspacePermissions = function(workspace: string): AxiosPromise<SingleUserWorkspacePermissionSpec> {
     return this.get(`workspaces/${workspace}/permissions/me/`);
-  }
+  };
 
   Proto.setWorkspacePermissions = function(workspace: string, permissions: WorkspacePermissionsSpec): AxiosPromise<WorkspacePermissionsSpec> {
     return this.put(`workspaces/${workspace}/permissions/`, permissions)
