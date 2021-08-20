@@ -52,7 +52,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   edges(workspace: string, network: string, options: EdgesOptionsSpec): AxiosPromise<Paginated<EdgesSpec>>;
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
-  renameWorkspace(workspace: string, name: string): AxiosPromise<any>;
+  renameWorkspace(workspace: string, name: string): AxiosPromise<Workspace>;
   uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   downloadTable(workspace: string, table: string): AxiosPromise<any>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
@@ -139,11 +139,9 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.delete(`/workspaces/${workspace}`);
   };
 
-  Proto.renameWorkspace = function(workspace: string, name: string): AxiosPromise<any> {
-    return this.put(`workspaces/${workspace}/name`, null, {
-      params: {
-        name,
-      },
+  Proto.renameWorkspace = function(workspace: string, name: string): AxiosPromise<Workspace> {
+    return this.put(`workspaces/${workspace}/`, {
+      name,
     });
   };
 
