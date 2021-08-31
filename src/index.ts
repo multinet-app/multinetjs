@@ -223,6 +223,10 @@ class MultinetAPI {
     return (await this.axios.edges(workspace, network, options)).data;
   }
 
+  public async networkTables(workspace: string, network: string, type: TableType = 'all'): Promise<Table[]> {
+    return (await this.axios.networkTables(workspace, network, type)).data;
+  }
+
   public async createWorkspace(workspace: string): Promise<string> {
     return (await this.axios.createWorkspace(workspace)).data;
   }
