@@ -213,11 +213,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.aql = function(workspace: string, query: string): AxiosPromise<any[]> {
-    return this.post(`/workspaces/${workspace}/aql`, query, {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-    });
+    return this.get(`/workspaces/${workspace}/aql`, { params: {query} });
   };
 
   Proto.createAQLTable = function(workspace: string, table: string, query: string): AxiosPromise<any[]> {
