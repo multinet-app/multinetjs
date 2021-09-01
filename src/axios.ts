@@ -53,7 +53,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   network(workspace: string, network: string): AxiosPromise<NetworkSpec>;
   nodes(workspace: string, network: string, options: OffsetLimitSpec): AxiosPromise<Paginated<TableRow>>;
   edges(workspace: string, network: string, options: EdgesOptionsSpec): AxiosPromise<Paginated<EdgesSpec>>;
-  networkTables(workspace: string, network: string, type: TableType): AxiosPromise<Table[]>
+  networkTables(workspace: string, network: string, type: TableType): AxiosPromise<Table[]>;
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
   renameWorkspace(workspace: string, name: string): AxiosPromise<Workspace>;
@@ -138,8 +138,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.networkTables = function(workspace: string, network: string, type: TableType = 'all'): AxiosPromise<Table[]> {
-    return this.get(`workspaces/${workspace}/networks/${network}/tables/`, { params: { type: type } });
-  }
+    return this.get(`workspaces/${workspace}/networks/${network}/tables/`, { params: {type} });
+  };
 
   Proto.createWorkspace = function(workspace: string): AxiosPromise<string> {
     return this.post(`/workspaces/`, {
