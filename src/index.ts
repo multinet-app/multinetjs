@@ -116,20 +116,8 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
 
 export type ColumnType = 'number' | 'label' | 'category' | 'date' | 'boolean';
 
-export interface ColumnTypesEntry {
-  key: string;
-  type: ColumnType;
-}
-
 export interface ColumnTypes {
   [key: string]: ColumnType;
-}
-
-export interface TableMetadata {
-  item_id: string;
-  table: {
-    columns: ColumnTypesEntry[];
-  };
 }
 
 export interface TableUploadOptionsSpec {
@@ -251,17 +239,8 @@ class MultinetAPI {
     return (await this.axios.deleteTable(workspace, table)).data;
   }
 
-  public async tableMetadata(workspace: string, table: string): Promise<TableMetadata> {
-    return (await this.axios.tableMetadata(workspace, table)).data;
-  }
-
-  public async tableColumnTypes(workspace: string, table: string): Promise<ColumnTypes> {
-    const metadata = await this.tableMetadata(workspace, table);
-
-    const types: ColumnTypes = {};
-    metadata.table.columns.forEach((entry) => {
-      types[entry.key] = entry.type;
-    });
+  public async columnTypes(workspace: string, table: string): Promise<ColumnTypes> {
+    const types = (await this.axios.columnTypes(workspace, table)).data;
     return types;
   }
 
