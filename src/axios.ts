@@ -3,7 +3,7 @@ import S3FileFieldClient, { S3FileFieldProgress, S3FileFieldProgressState } from
 
 import {
   CreateNetworkOptionsSpec,
-  TableMetadata,
+  ColumnTypes,
   TableUploadOptionsSpec,
   NetworkUploadOptionsSpec,
   EdgesSpec,
@@ -60,7 +60,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   downloadTable(workspace: string, table: string): AxiosPromise<any>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
-  tableMetadata(workspace: string, table: string): AxiosPromise<TableMetadata>;
+  columnTypes(workspace: string, table: string): AxiosPromise<ColumnTypes>;
   uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): AxiosPromise<CreateNetworkOptionsSpec>;
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
@@ -182,8 +182,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.delete(`/workspaces/${workspace}/tables/${table}`);
   };
 
-  Proto.tableMetadata = function(workspace: string, table: string): AxiosPromise<TableMetadata> {
-    return this.get(`/workspaces/${workspace}/tables/${table}/metadata`);
+  Proto.columnTypes = function(workspace: string, table: string): AxiosPromise<ColumnTypes> {
+    return this.get(`/workspaces/${workspace}/tables/${table}/annotations`);
   };
 
   Proto.uploadNetwork = async function(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
