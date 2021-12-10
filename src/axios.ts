@@ -233,8 +233,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.uploads = function(workspace: string): AxiosPromise<any> {
-    return this.get(`/workspaces/${workspace}/uploads`)
-  }
+    return this.get(`/workspaces/${workspace}/uploads`);
+  };
 
   return axiosInstance as MultinetAxiosInstance;
 }
