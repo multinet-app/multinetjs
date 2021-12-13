@@ -67,6 +67,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   aql(workspace: string, query: string): AxiosPromise<any[]>;
   createAQLTable(workspace: string, table: string, query: string): AxiosPromise<any[]>;
   downloadNetwork(workspace: string, network: string): AxiosPromise<any>;
+  uploads(workspace: string): AxiosPromise<any>;
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
@@ -229,6 +230,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
   Proto.downloadNetwork = function(workspace: string, network: string): AxiosPromise<any> {
     return this.get(`/workspaces/${workspace}/networks/${network}/download`);
+  };
+
+  Proto.uploads = function(workspace: string): AxiosPromise<any> {
+    return this.get(`/workspaces/${workspace}/uploads`);
   };
 
   return axiosInstance as MultinetAxiosInstance;

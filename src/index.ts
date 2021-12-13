@@ -267,6 +267,10 @@ class MultinetAPI {
   public async downloadNetwork(workspace: string, network: string): Promise<any> {
     return (await this.axios.downloadNetwork(workspace, network)).data;
   }
+
+  public async uploads(workspace: string): Promise<any> {
+    return (await this.axios.uploads(workspace)).data;
+  }
 }
 
 export function multinetApi(baseURL: string): MultinetAPI {
