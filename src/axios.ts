@@ -75,15 +75,15 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   const Proto = Object.getPrototypeOf(axiosInstance);
 
   Proto.logout = function(): void {
-    this.get('/user/logout');
+    this.get('user/logout');
   };
 
   Proto.userInfo = function(): AxiosPromise<UserSpec | null> {
-    return this.get('/users/me');
+    return this.get('users/me');
   };
 
   Proto.workspaces = function(): AxiosPromise<Paginated<Workspace>> {
-    return this.get('workspaces');
+    return this.get('workspaces/');
   };
 
   Proto.getWorkspacePermissions = function(workspace: string): AxiosPromise<WorkspacePermissionsSpec> {
@@ -107,33 +107,33 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.tables = function(workspace: string, options: TablesOptionsSpec = {}): AxiosPromise<Paginated<Table>> {
-    return this.get(`workspaces/${workspace}/tables`, {
+    return this.get(`workspaces/${workspace}/tables/`, {
       params: options,
     });
   };
 
   Proto.table = function(workspace: string, table: string, options: OffsetLimitSpec = {}): AxiosPromise<Paginated<TableRow>> {
-    return this.get(`workspaces/${workspace}/tables/${table}/rows`, {
+    return this.get(`workspaces/${workspace}/tables/${table}/rows/`, {
       params: options,
     });
   };
 
   Proto.networks = function(workspace: string): AxiosPromise<Paginated<Network>> {
-    return this.get(`workspaces/${workspace}/networks`);
+    return this.get(`workspaces/${workspace}/networks/`);
   };
 
   Proto.network = function(workspace: string, network: string): AxiosPromise<NetworkSpec> {
-    return this.get(`workspaces/${workspace}/networks/${network}`);
+    return this.get(`workspaces/${workspace}/networks/${network}/`);
   };
 
   Proto.nodes = function(workspace: string, network: string, options: OffsetLimitSpec = {}): AxiosPromise<Paginated<TableRow>> {
-    return this.get(`workspaces/${workspace}/networks/${network}/nodes`, {
+    return this.get(`workspaces/${workspace}/networks/${network}/nodes/`, {
       params: options,
     });
   };
 
   Proto.edges = function(workspace: string, network: string, options: EdgesOptionsSpec = {}): AxiosPromise<Paginated<EdgesSpec>> {
-    return this.get(`workspaces/${workspace}/networks/${network}/edges`, {
+    return this.get(`workspaces/${workspace}/networks/${network}/edges/`, {
       params: options,
     });
   };
@@ -143,13 +143,13 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.createWorkspace = function(workspace: string): AxiosPromise<string> {
-    return this.post(`/workspaces/`, {
+    return this.post(`workspaces/`, {
       name: workspace,
     });
   };
 
   Proto.deleteWorkspace = function(workspace: string): AxiosPromise<string> {
-    return this.delete(`/workspaces/${workspace}`);
+    return this.delete(`workspaces/${workspace}/`);
   };
 
   Proto.renameWorkspace = function(workspace: string, name: string): AxiosPromise<Workspace> {
@@ -180,11 +180,11 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.deleteTable = function(workspace: string, table: string): AxiosPromise<string> {
-    return this.delete(`/workspaces/${workspace}/tables/${table}`);
+    return this.delete(`/workspaces/${workspace}/tables/${table}/`);
   };
 
   Proto.columnTypes = function(workspace: string, table: string): AxiosPromise<ColumnTypes> {
-    return this.get(`/workspaces/${workspace}/tables/${table}/annotations`);
+    return this.get(`/workspaces/${workspace}/tables/${table}/annotations/`);
   };
 
   Proto.uploadNetwork = async function(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
@@ -210,15 +210,15 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.deleteNetwork = function(workspace: string, network: string): AxiosPromise<string> {
-    return this.delete(`/workspaces/${workspace}/networks/${network}`);
+    return this.delete(`/workspaces/${workspace}/networks/${network}/`);
   };
 
   Proto.aql = function(workspace: string, query: string): AxiosPromise<any[]> {
-    return this.get(`/workspaces/${workspace}/aql`, { params: {query} });
+    return this.get(`/workspaces/${workspace}/aql/`, { params: {query} });
   };
 
   Proto.createAQLTable = function(workspace: string, table: string, query: string): AxiosPromise<any[]> {
-    return this.post(`/workspaces/${workspace}/tables`, query, {
+    return this.post(`/workspaces/${workspace}/tables/`, query, {
       headers: {
         'Content-Type': 'text/plain',
       },
@@ -233,7 +233,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.uploads = function(workspace: string): AxiosPromise<any> {
-    return this.get(`/workspaces/${workspace}/uploads`);
+    return this.get(`/workspaces/${workspace}/uploads/`);
   };
 
   return axiosInstance as MultinetAxiosInstance;
