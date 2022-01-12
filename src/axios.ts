@@ -99,7 +99,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.searchUsers = function(username: string): AxiosPromise<UserSpec[]> {
-    return this.get('/users/search', {
+    return this.get('users/search', {
       params: {
         username,
       },
