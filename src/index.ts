@@ -137,6 +137,11 @@ export interface CreateNetworkOptionsSpec {
   edgeTable: string;
 }
 
+export interface AQLQuerySpec {
+  query: string;
+  bind_vars: Record<string, string>;
+}
+
 class MultinetAPI {
   public axios: MultinetAxiosInstance;
 
@@ -256,12 +261,8 @@ class MultinetAPI {
     return (await this.axios.deleteNetwork(workspace, network)).data;
   }
 
-  public async aql(workspace: string, query: string): Promise<any[]> {
-    return (await this.axios.aql(workspace, query)).data;
-  }
-
-  public async createAQLTable(workspace: string, table: string, query: string): Promise<any[]> {
-    return (await this.axios.createAQLTable(workspace, table, query)).data;
+  public async aql(workspace: string, payload: AQLQuerySpec): Promise<any[]> {
+    return (await this.axios.aql(workspace, payload)).data;
   }
 
   public async downloadNetwork(workspace: string, network: string): Promise<any> {

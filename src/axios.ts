@@ -20,6 +20,7 @@ import {
   UserSpec,
   WorkspacePermissionsSpec,
   Workspace,
+  AQLQuerySpec,
 } from './index';
 
 function fileToText(file: File): Promise<string> {
@@ -64,8 +65,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): AxiosPromise<CreateNetworkOptionsSpec>;
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
-  aql(workspace: string, query: string): AxiosPromise<any[]>;
-  createAQLTable(workspace: string, table: string, query: string): AxiosPromise<any[]>;
+  aql(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]>;
   downloadNetwork(workspace: string, network: string): AxiosPromise<any>;
   uploads(workspace: string): AxiosPromise<any>;
 }
@@ -213,19 +213,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.delete(`workspaces/${workspace}/networks/${network}/`);
   };
 
-  Proto.aql = function(workspace: string, query: string): AxiosPromise<any[]> {
-    return this.get(`workspaces/${workspace}/aql/`, { params: {query} });
-  };
-
-  Proto.createAQLTable = function(workspace: string, table: string, query: string): AxiosPromise<any[]> {
-    return this.post(`workspaces/${workspace}/tables/`, query, {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-      params: {
-        table,
-      },
-    });
+  Proto.aql = function(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]> {
+    return this.post(`workspaces/${workspace}/aql/`, payload);
   };
 
   Proto.downloadNetwork = function(workspace: string, network: string): AxiosPromise<any> {
