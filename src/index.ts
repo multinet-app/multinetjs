@@ -126,6 +126,8 @@ export interface TableUploadOptionsSpec {
   columnTypes?: {
     [key: string]: ColumnType;
   };
+  delimiter: string;
+  quoteChar: string;
 }
 
 export interface NetworkUploadOptionsSpec {

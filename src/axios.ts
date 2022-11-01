@@ -159,7 +159,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.uploadTable = async function(workspace: string, table: string, options: TableUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
-    const { data, edgeTable, columnTypes } = options;
+    const { data, edgeTable, columnTypes, delimiter, quoteChar } = options;
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
@@ -172,6 +172,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       edge: edgeTable,
       table_name: table,
       columns: columnTypes,
+      delimiter,
+      quotechar: quoteChar,
     });
   };
 
