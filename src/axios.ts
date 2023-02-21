@@ -167,8 +167,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
     const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
-    console.log('js', fileType);
-
     if (fileType === 'csv') {
       return this.post(`workspaces/${workspace}/uploads/csv/`, {
         field_value: fieldValue.value,
@@ -187,7 +185,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       table_name: table,
       columns: columnTypes,
     });
-    
   };
 
   Proto.downloadTable = function(workspace: string, table: string): AxiosPromise<any> {
