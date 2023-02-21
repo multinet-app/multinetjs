@@ -159,7 +159,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   };
 
   Proto.uploadTable = async function(workspace: string, table: string, options: TableUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
-    const { data, edgeTable, columnTypes, delimiter, quoteChar } = options;
+    const { data, edgeTable, columnTypes, fileType, delimiter, quoteChar } = options;
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
@@ -167,13 +167,23 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
     const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
-    return this.post(`workspaces/${workspace}/uploads/csv/`, {
+    if (fileType === 'csv') {
+      return this.post(`workspaces/${workspace}/uploads/csv/`, {
+        field_value: fieldValue.value,
+        edge: edgeTable,
+        table_name: table,
+        columns: columnTypes,
+        delimiter,
+        quotechar: quoteChar,
+      });
+    }
+
+    // else if json
+    return this.post(`workspaces/${workspace}/uploads/json/`, {
       field_value: fieldValue.value,
       edge: edgeTable,
       table_name: table,
       columns: columnTypes,
-      delimiter,
-      quotechar: quoteChar,
     });
   };
 
