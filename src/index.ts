@@ -239,10 +239,6 @@ class MultinetAPI {
     return (await this.axios.uploadTable(workspace, table, options)).data;
   }
 
-  public async downloadTable(workspace: string, table: string): Promise<any> {
-    return (await this.axios.downloadTable(workspace, table)).data;
-  }
-
   public async deleteTable(workspace: string, table: string): Promise<string> {
     return (await this.axios.deleteTable(workspace, table)).data;
   }
@@ -266,10 +262,6 @@ class MultinetAPI {
 
   public async aql(workspace: string, payload: AQLQuerySpec): Promise<any[]> {
     return (await this.axios.aql(workspace, payload)).data;
-  }
-
-  public async downloadNetwork(workspace: string, network: string): Promise<any> {
-    return (await this.axios.downloadNetwork(workspace, network)).data;
   }
 
   public async uploads(workspace: string): Promise<any> {
