@@ -272,3 +272,30 @@ class MultinetAPI {
 export function multinetApi(baseURL: string): MultinetAPI {
   return new MultinetAPI(baseURL);
 }
+
+export function writeSharedLoginCookie(token: string, domain?: string) {
+  if (domain === undefined) {
+    domain = window.location.hostname;
+  }
+  document.cookie = `sharedLogin=${token}; Domain=${domain}`;
+}
+
+export function readSharedLoginCookie(): string | null {
+  let value = null;
+
+  const cookie = document.cookie.split('; ')
+    .find((c) => c.startsWith('sharedLogin='));
+
+  if (cookie !== undefined) {
+    value = cookie.split('=')[1];
+  }
+
+  return value;
+}
+
+export function invalidateSharedLoginCookie(domain?: string) {
+  if (domain === undefined) {
+    domain = window.location.hostname;
+  }
+  document.cookie = `sharedLogin=; Domain=${domain}; Max-Age=0`;
+}
