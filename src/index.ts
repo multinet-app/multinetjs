@@ -275,7 +275,7 @@ export function multinetApi(baseURL: string): MultinetAPI {
 
 export function writeSharedLoginCookie(token: string, domain?: string) {
   if (domain === undefined) {
-    domain = window.location.hostname;
+    domain = window.location.hostname.split('.').slice(-2).join('.');
   }
   document.cookie = `sharedLogin=${token}; Domain=${domain}`;
 }
@@ -295,7 +295,7 @@ export function readSharedLoginCookie(): string | null {
 
 export function invalidateSharedLoginCookie(domain?: string) {
   if (domain === undefined) {
-    domain = window.location.hostname;
+    domain = window.location.hostname.split('.').slice(-2).join('.');
   }
   document.cookie = `sharedLogin=; Domain=${domain}; Max-Age=0`;
 }
