@@ -77,9 +77,8 @@ export interface Workspace {
   created: string;
   modified: string;
   arango_db_name: string;
+  public: boolean;
 }
-
-
 
 export type TableType = 'all' | 'node' | 'edge';
 
