@@ -239,10 +239,6 @@ class MultinetAPI {
     return (await this.axios.uploadTable(workspace, table, options)).data;
   }
 
-  public async downloadTable(workspace: string, table: string): Promise<any> {
-    return (await this.axios.downloadTable(workspace, table)).data;
-  }
-
   public async deleteTable(workspace: string, table: string): Promise<string> {
     return (await this.axios.deleteTable(workspace, table)).data;
   }
@@ -268,10 +264,6 @@ class MultinetAPI {
     return (await this.axios.aql(workspace, payload)).data;
   }
 
-  public async downloadNetwork(workspace: string, network: string): Promise<any> {
-    return (await this.axios.downloadNetwork(workspace, network)).data;
-  }
-
   public async uploads(workspace: string): Promise<any> {
     return (await this.axios.uploads(workspace)).data;
   }
@@ -279,4 +271,31 @@ class MultinetAPI {
 
 export function multinetApi(baseURL: string): MultinetAPI {
   return new MultinetAPI(baseURL);
+}
+
+export function writeSharedLoginCookie(token: string, domain?: string) {
+  if (domain === undefined) {
+    domain = window.location.hostname.split('.').slice(-2).join('.');
+  }
+  document.cookie = `sharedLogin=${token}; Domain=${domain}`;
+}
+
+export function readSharedLoginCookie(): string | null {
+  let value = null;
+
+  const cookie = document.cookie.split('; ')
+    .find((c) => c.startsWith('sharedLogin='));
+
+  if (cookie !== undefined) {
+    value = cookie.split('=')[1];
+  }
+
+  return value;
+}
+
+export function invalidateSharedLoginCookie(domain?: string) {
+  if (domain === undefined) {
+    domain = window.location.hostname.split('.').slice(-2).join('.');
+  }
+  document.cookie = `sharedLogin=; Domain=${domain}; Max-Age=0`;
 }

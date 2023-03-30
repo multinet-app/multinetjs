@@ -59,14 +59,12 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   deleteWorkspace(workspace: string): AxiosPromise<string>;
   renameWorkspace(workspace: string, name: string): AxiosPromise<Workspace>;
   uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
-  downloadTable(workspace: string, table: string): AxiosPromise<any>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
   columnTypes(workspace: string, table: string): AxiosPromise<ColumnTypes>;
   uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): AxiosPromise<CreateNetworkOptionsSpec>;
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
   aql(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]>;
-  downloadNetwork(workspace: string, network: string): AxiosPromise<any>;
   uploads(workspace: string): AxiosPromise<any>;
 }
 
@@ -187,10 +185,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   };
 
-  Proto.downloadTable = function(workspace: string, table: string): AxiosPromise<any> {
-    return this.get(`workspaces/${workspace}/tables/${table}/download`);
-  };
-
   Proto.deleteTable = function(workspace: string, table: string): AxiosPromise<string> {
     return this.delete(`workspaces/${workspace}/tables/${table}/`);
   };
@@ -227,10 +221,6 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
   Proto.aql = function(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]> {
     return this.post(`workspaces/${workspace}/aql/`, payload);
-  };
-
-  Proto.downloadNetwork = function(workspace: string, network: string): AxiosPromise<any> {
-    return this.get(`workspaces/${workspace}/networks/${network}/download`);
   };
 
   Proto.uploads = function(workspace: string): AxiosPromise<any> {
