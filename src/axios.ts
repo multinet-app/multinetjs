@@ -66,6 +66,11 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
   aql(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]>;
   uploads(workspace: string): AxiosPromise<any>;
+  createSession(itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any>;
+  listSessions(type: 'network' | 'table'): AxiosPromise<any>;
+  deleteSession(sessionId: string, type: 'network' | 'table'): Promise<any>;
+  updateSession(sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any>;
+  getSession(sessionId: string, type: 'network' | 'table'): AxiosPromise<any>;
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
@@ -226,6 +231,33 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
   Proto.uploads = function(workspace: string): AxiosPromise<any> {
     return this.get(`workspaces/${workspace}/uploads/`);
   };
+
+  Proto.createSession = function(itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any> {
+    return this.post(`sessions/${type}/`, {
+      name,
+      visapp: visApp,
+      state: {},
+      [type]: itemId,
+    });
+  }
+
+  Proto.listSessions = function(type: 'network' | 'table'): AxiosPromise<any> {
+    return this.get(`sessions/${type}/`);
+  }
+
+  Proto.deleteSession = function(sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
+    return this.delete(`sessions/${type}/${sessionId}/`);
+  }
+
+  Proto.updateSession = function(sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any> {
+    return this.patch(`sessions/${type}/${sessionId}/state/`, {
+      state,
+    });
+  }
+
+  Proto.getSession = function(sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
+    return this.get(`sessions/${type}/${sessionId}`);
+  }
 
   return axiosInstance as MultinetAxiosInstance;
 }

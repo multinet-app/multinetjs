@@ -144,6 +144,18 @@ export interface AQLQuerySpec {
   bind_vars: Record<string, string>;
 }
 
+export type Session = {
+  id: string;
+  created: string;
+  modified: string;
+  name: string;
+  visapp: string;
+  state: object;
+} & (
+  { network: string }
+  | { table: string }
+)
+
 class MultinetAPI {
   public axios: MultinetAxiosInstance;
 
@@ -265,6 +277,26 @@ class MultinetAPI {
 
   public async uploads(workspace: string): Promise<any> {
     return (await this.axios.uploads(workspace)).data;
+  }
+
+  public async createSession(itemId: number, type: 'network' | 'table', visApp: string, name: string): Promise<any> {
+    return (await this.axios.createSession(itemId, type, visApp, name)).data;
+  }
+
+  public async listSessions(type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.listSessions(type)).data;
+  }
+
+  public async deleteSession(sessionId: string, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.deleteSession(sessionId, type)).data;
+  }
+
+  public async updateSession(sessionId: string, type: 'network' | 'table', state: string): Promise<any> {
+    return (await this.axios.updateSession(sessionId, type, state)).data;
+  }
+
+  public async getSession(sessionId: string, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.getSession(sessionId, type)).data;
   }
 }
 
