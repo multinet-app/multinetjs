@@ -66,11 +66,11 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
   aql(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]>;
   uploads(workspace: string): AxiosPromise<any>;
-  createSession(itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any>;
-  listSessions(type: 'network' | 'table'): AxiosPromise<any>;
-  deleteSession(sessionId: string, type: 'network' | 'table'): Promise<any>;
-  updateSession(sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any>;
-  getSession(sessionId: string, type: 'network' | 'table'): AxiosPromise<any>;
+  createSession(workspace: string, itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any>;
+  listSessions(workspace: string, type: 'network' | 'table'): AxiosPromise<any>;
+  deleteSession(workspace: string, sessionId: string, type: 'network' | 'table'): Promise<any>;
+  updateSession(workspace: string, sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any>;
+  getSession(workspace: string, sessionId: string, type: 'network' | 'table'): AxiosPromise<any>;
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
@@ -232,8 +232,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/uploads/`);
   };
 
-  Proto.createSession = function(itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any> {
-    return this.post(`sessions/${type}/`, {
+  Proto.createSession = function(workspace: string, itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any> {
+    return this.post(`workspaces/${workspace}/sessions/${type}/`, {
       name,
       visapp: visApp,
       state: {},
@@ -241,22 +241,22 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     });
   }
 
-  Proto.listSessions = function(type: 'network' | 'table'): AxiosPromise<any> {
-    return this.get(`sessions/${type}/`);
+  Proto.listSessions = function(workspace: string, type: 'network' | 'table'): AxiosPromise<any> {
+    return this.get(`workspaces/${workspace}/sessions/${type}/`);
   }
 
-  Proto.deleteSession = function(sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
-    return this.delete(`sessions/${type}/${sessionId}/`);
+  Proto.deleteSession = function(workspace: string, sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
+    return this.delete(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
   }
 
-  Proto.updateSession = function(sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any> {
-    return this.patch(`sessions/${type}/${sessionId}/state/`, {
+  Proto.updateSession = function(workspace: string, sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any> {
+    return this.patch(`workspaces/${workspace}/sessions/${type}/${sessionId}/state/`, {
       state,
     });
   }
 
-  Proto.getSession = function(sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
-    return this.get(`sessions/${type}/${sessionId}`);
+  Proto.getSession = function(workspace: string, sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
+    return this.get(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
   }
 
   return axiosInstance as MultinetAxiosInstance;

@@ -279,24 +279,24 @@ class MultinetAPI {
     return (await this.axios.uploads(workspace)).data;
   }
 
-  public async createSession(itemId: number, type: 'network' | 'table', visApp: string, name: string): Promise<any> {
-    return (await this.axios.createSession(itemId, type, visApp, name)).data;
+  public async createSession(workspace: string, itemId: number, type: 'network' | 'table', visApp: string, name: string): Promise<any> {
+    return (await this.axios.createSession(workspace, itemId, type, visApp, name)).data;
   }
 
-  public async listSessions(type: 'network' | 'table'): Promise<any> {
-    return (await this.axios.listSessions(type)).data;
+  public async listSessions(workspace: string, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.listSessions(workspace, type)).data;
   }
 
-  public async deleteSession(sessionId: string, type: 'network' | 'table'): Promise<any> {
-    return (await this.axios.deleteSession(sessionId, type)).data;
+  public async deleteSession(workspace: string, sessionId: string, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.deleteSession(workspace, sessionId, type)).data;
   }
 
-  public async updateSession(sessionId: string, type: 'network' | 'table', state: string): Promise<any> {
-    return (await this.axios.updateSession(sessionId, type, state)).data;
+  public async updateSession(workspace: string, sessionId: string, type: 'network' | 'table', state: string): Promise<any> {
+    return (await this.axios.updateSession(workspace, sessionId, type, state)).data;
   }
 
-  public async getSession(sessionId: string, type: 'network' | 'table'): Promise<any> {
-    return (await this.axios.getSession(sessionId, type)).data;
+  public async getSession(workspace: string, sessionId: string, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.getSession(workspace, sessionId, type)).data;
   }
 }
 
