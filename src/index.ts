@@ -82,22 +82,6 @@ export interface Workspace {
 
 export type TableType = 'all' | 'node' | 'edge';
 
-export type TableUploadType = 'csv';
-export type NetworkUploadType = 'nested_json' | 'newick' | 'd3_json';
-export type UploadType = TableUploadType | NetworkUploadType;
-
-export function validTableUploadType(type: string): type is TableUploadType {
-  return type === 'csv';
-}
-
-export function validNetworkUploadType(type: string): type is NetworkUploadType {
-  return ['nested_json', 'newick', 'd3_json'].includes(type);
-}
-
-export function validUploadType(type: string): type is UploadType {
-  return validTableUploadType(type) || validNetworkUploadType(type);
-}
-
 export type Direction = 'all' | 'incoming' | 'outgoing';
 
 export interface TablesOptionsSpec {
@@ -113,7 +97,7 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
   direction?: Direction;
 };
 
-export type ColumnType = 'number' | 'label' | 'category' | 'date' | 'boolean';
+export type ColumnType = 'primary key' | 'edge source' | 'edge target' | 'label' | 'boolean' | 'category' | 'number' | 'date';
 
 export interface ColumnTypes {
   [key: string]: ColumnType;
@@ -122,9 +106,7 @@ export interface ColumnTypes {
 export interface TableUploadOptionsSpec {
   data: File;
   edgeTable: boolean;
-  columnTypes?: {
-    [key: string]: ColumnType;
-  };
+  columnTypes?: Record<string, ColumnType>;
   fileType: 'json' | 'csv';
   delimiter?: string;
   quoteChar?: string;
@@ -132,7 +114,6 @@ export interface TableUploadOptionsSpec {
 
 export interface NetworkUploadOptionsSpec {
   data: File;
-  type: NetworkUploadType;
 }
 
 export interface CreateNetworkOptionsSpec {
@@ -247,8 +228,8 @@ class MultinetAPI {
     return types;
   }
 
-  public async uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<Array<{}>> {
-    return (await this.axios.uploadNetwork(workspace, network, options)).data;
+  public async uploadNetwork(workspace: string, network: string, data: File, node_columns: Record<string, ColumnType>, edge_columns: Record<string, ColumnType>): Promise<Array<{}>> {
+    return (await this.axios.uploadNetwork(workspace, network, data, node_columns, edge_columns)).data;
   }
 
   public async createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): Promise<CreateNetworkOptionsSpec> {
