@@ -62,7 +62,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
   columnTypes(workspace: string, table: string): AxiosPromise<ColumnTypes>;
-  uploadNetwork(workspace: string, network: string, data: File, node_columns: Record<string, ColumnType>, edge_columns: Record<string, ColumnType>, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
+  uploadNetwork(workspace: string, network: string, data: File, nodeColumns: Record<string, ColumnType>, edgeColumns: Record<string, ColumnType>, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): AxiosPromise<CreateNetworkOptionsSpec>;
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
   aql(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]>;
@@ -194,7 +194,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/tables/${table}/annotations/`);
   };
 
-  Proto.uploadNetwork = async function(workspace: string, network: string, data: File, node_columns: Record<string, ColumnType>, edge_columns: Record<string, ColumnType>): Promise<AxiosResponse<Array<{}>>> {
+  Proto.uploadNetwork = async function(workspace: string, network: string, data: File, nodeColumns: Record<string, ColumnType>, edgeColumns: Record<string, ColumnType>): Promise<AxiosResponse<Array<{}>>> {
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
@@ -205,8 +205,8 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.post(`workspaces/${workspace}/uploads/json_network/`, {
       field_value: fieldValue.value,
       network_name: network,
-      node_columns,
-      edge_columns
+      node_columns: nodeColumns,
+      edge_columns: edgeColumns,
     });
   };
 

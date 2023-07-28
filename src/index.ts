@@ -228,8 +228,8 @@ class MultinetAPI {
     return types;
   }
 
-  public async uploadNetwork(workspace: string, network: string, data: File, node_columns: Record<string, ColumnType>, edge_columns: Record<string, ColumnType>): Promise<Array<{}>> {
-    return (await this.axios.uploadNetwork(workspace, network, data, node_columns, edge_columns)).data;
+  public async uploadNetwork(workspace: string, network: string, data: File, nodeColumns: Record<string, ColumnType>, edgeColumns: Record<string, ColumnType>): Promise<Array<{}>> {
+    return (await this.axios.uploadNetwork(workspace, network, data, nodeColumns, edgeColumns)).data;
   }
 
   public async createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): Promise<CreateNetworkOptionsSpec> {
