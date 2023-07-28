@@ -151,10 +151,9 @@ export type Session = {
   name: string;
   visapp: string;
   state: object;
-} & (
-  { network: string }
-  | { table: string }
-)
+  network?: number;
+  table?: number;
+}
 
 class MultinetAPI {
   public axios: MultinetAxiosInstance;
