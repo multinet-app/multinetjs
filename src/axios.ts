@@ -68,9 +68,10 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   uploads(workspace: string): AxiosPromise<any>;
   createSession(workspace: string, itemId: number, type: 'network' | 'table', visApp: string, name: string): AxiosPromise<any>;
   listSessions(workspace: string, type: 'network' | 'table'): AxiosPromise<any>;
-  deleteSession(workspace: string, sessionId: string, type: 'network' | 'table'): Promise<any>;
-  updateSession(workspace: string, sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any>;
-  getSession(workspace: string, sessionId: string, type: 'network' | 'table'): AxiosPromise<any>;
+  deleteSession(workspace: string, sessionId: number, type: 'network' | 'table'): Promise<any>;
+  updateSession(workspace: string, sessionId: number, type: 'network' | 'table', state: string): AxiosPromise<any>;
+  renameSession(workspace: string, sessionId: number, type: 'network' | 'table', name: string): AxiosPromise<any>;
+  getSession(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any>;
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
@@ -245,17 +246,23 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/sessions/${type}/`);
   }
 
-  Proto.deleteSession = function(workspace: string, sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
+  Proto.deleteSession = function(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any> {
     return this.delete(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
   }
 
-  Proto.updateSession = function(workspace: string, sessionId: string, type: 'network' | 'table', state: string): AxiosPromise<any> {
+  Proto.updateSession = function(workspace: string, sessionId: number, type: 'network' | 'table', state: string): AxiosPromise<any> {
     return this.patch(`workspaces/${workspace}/sessions/${type}/${sessionId}/state/`, {
       state,
     });
   }
 
-  Proto.getSession = function(workspace: string, sessionId: string, type: 'network' | 'table'): AxiosPromise<any> {
+  Proto.renameSession = function(workspace: string, sessionId: number, type: 'network' | 'table', name: string): AxiosPromise<any> {
+    return this.patch(`workspaces/${workspace}/sessions/${type}/${sessionId}/name/`, {
+      name,
+    });
+  }
+
+  Proto.getSession = function(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any> {
     return this.get(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
   }
 
