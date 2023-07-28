@@ -144,7 +144,7 @@ export interface AQLQuerySpec {
   bind_vars: Record<string, string>;
 }
 
-export type Session = {
+export interface Session {
   id: number;
   created: string;
   modified: string;

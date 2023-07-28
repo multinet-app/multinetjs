@@ -240,31 +240,31 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
       state: {},
       [type]: itemId,
     });
-  }
+  };
 
   Proto.listSessions = function(workspace: string, type: 'network' | 'table'): AxiosPromise<any> {
     return this.get(`workspaces/${workspace}/sessions/${type}/`);
-  }
+  };
 
   Proto.deleteSession = function(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any> {
     return this.delete(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
-  }
+  };
 
   Proto.updateSession = function(workspace: string, sessionId: number, type: 'network' | 'table', state: string): AxiosPromise<any> {
     return this.patch(`workspaces/${workspace}/sessions/${type}/${sessionId}/state/`, {
       state,
     });
-  }
+  };
 
   Proto.renameSession = function(workspace: string, sessionId: number, type: 'network' | 'table', name: string): AxiosPromise<any> {
     return this.patch(`workspaces/${workspace}/sessions/${type}/${sessionId}/name/`, {
       name,
     });
-  }
+  };
 
   Proto.getSession = function(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any> {
     return this.get(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
-  }
+  };
 
   return axiosInstance as MultinetAxiosInstance;
 }
