@@ -144,6 +144,17 @@ export interface AQLQuerySpec {
   bind_vars: Record<string, string>;
 }
 
+export interface Session {
+  id: number;
+  created: string;
+  modified: string;
+  name: string;
+  visapp: string;
+  state: object;
+  network?: number;
+  table?: number;
+}
+
 class MultinetAPI {
   public axios: MultinetAxiosInstance;
 
@@ -265,6 +276,30 @@ class MultinetAPI {
 
   public async uploads(workspace: string): Promise<any> {
     return (await this.axios.uploads(workspace)).data;
+  }
+
+  public async createSession(workspace: string, itemId: number, type: 'network' | 'table', visApp: string, name: string): Promise<any> {
+    return (await this.axios.createSession(workspace, itemId, type, visApp, name)).data;
+  }
+
+  public async listSessions(workspace: string, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.listSessions(workspace, type)).data;
+  }
+
+  public async deleteSession(workspace: string, sessionId: number, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.deleteSession(workspace, sessionId, type)).data;
+  }
+
+  public async updateSession(workspace: string, sessionId: number, type: 'network' | 'table', state: string): Promise<any> {
+    return (await this.axios.updateSession(workspace, sessionId, type, state)).data;
+  }
+
+  public async renameSession(workspace: string, sessionId: number, type: 'network' | 'table', name: string): Promise<any> {
+    return (await this.axios.renameSession(workspace, sessionId, type, name)).data;
+  }
+
+  public async getSession(workspace: string, sessionId: number, type: 'network' | 'table'): Promise<any> {
+    return (await this.axios.getSession(workspace, sessionId, type)).data;
   }
 }
 
