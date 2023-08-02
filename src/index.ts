@@ -97,7 +97,7 @@ export type EdgesOptionsSpec = OffsetLimitSpec & {
   direction?: Direction;
 };
 
-export type ColumnType = 'primary key' | 'edge source' | 'edge target' | 'label' | 'boolean' | 'category' | 'number' | 'date';
+export type ColumnType = 'primary key' | 'edge source' | 'edge target' | 'label' | 'string' | 'boolean' | 'category' | 'number' | 'date';
 
 export interface ColumnTypes {
   [key: string]: ColumnType;
