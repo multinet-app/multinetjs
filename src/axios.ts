@@ -21,6 +21,7 @@ import {
   WorkspacePermissionsSpec,
   Workspace,
   AQLQuerySpec,
+  ColumnType,
 } from './index';
 
 function fileToText(file: File): Promise<string> {
@@ -61,7 +62,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
   columnTypes(workspace: string, table: string): AxiosPromise<ColumnTypes>;
-  uploadNetwork(workspace: string, network: string, options: NetworkUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
+  uploadNetwork(workspace: string, network: string, data: File, nodeColumns: Record<string, ColumnType>, edgeColumns: Record<string, ColumnType>, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   createNetwork(workspace: string, network: string, options: CreateNetworkOptionsSpec): AxiosPromise<CreateNetworkOptionsSpec>;
   deleteNetwork(workspace: string, network: string): AxiosPromise<string>;
   aql(workspace: string, payload: AQLQuerySpec): AxiosPromise<any[]>;
@@ -183,7 +184,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     }
 
     // else if json
-    return this.post(`workspaces/${workspace}/uploads/json/`, {
+    return this.post(`workspaces/${workspace}/uploads/json_table/`, {
       field_value: fieldValue.value,
       edge: edgeTable,
       table_name: table,
@@ -199,8 +200,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.get(`workspaces/${workspace}/tables/${table}/annotations/`);
   };
 
-  Proto.uploadNetwork = async function(workspace: string, network: string, options: NetworkUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
-    const { type, data } = options;
+  Proto.uploadNetwork = async function(workspace: string, network: string, data: File, nodeColumns: Record<string, ColumnType>, edgeColumns: Record<string, ColumnType>): Promise<AxiosResponse<Array<{}>>> {
     const s3ffClient = new S3FileFieldClient({
       baseUrl: `${this.defaults.baseURL}/s3-upload/`,
       apiConfig: this.defaults,
@@ -208,9 +208,11 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
     const fieldValue = await s3ffClient.uploadFile(data, 'api.Upload.blob');
 
-    return this.post(`workspaces/${workspace}/uploads/${type}/`, {
+    return this.post(`workspaces/${workspace}/uploads/json_network/`, {
       field_value: fieldValue.value,
       network_name: network,
+      node_columns: nodeColumns,
+      edge_columns: edgeColumns,
     });
   };
 
