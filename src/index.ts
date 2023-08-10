@@ -134,6 +134,7 @@ export interface Session {
   state: object;
   network?: number;
   table?: number;
+  starred: boolean;
 }
 
 class MultinetAPI {
