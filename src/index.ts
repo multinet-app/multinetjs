@@ -78,6 +78,7 @@ export interface Workspace {
   modified: string;
   arango_db_name: string;
   public: boolean;
+  starred: boolean;
 }
 
 export type TableType = 'all' | 'node' | 'edge';
@@ -134,6 +135,7 @@ export interface Session {
   state: object;
   network?: number;
   table?: number;
+  starred: boolean;
 }
 
 class MultinetAPI {
