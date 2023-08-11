@@ -273,7 +273,7 @@ class MultinetAPI {
     return (await this.axios.deleteSession(workspace, sessionId, type)).data;
   }
 
-  public async updateSession(workspace: string, sessionId: number, type: 'network' | 'table', state: string): Promise<any> {
+  public async updateSession(workspace: string, sessionId: number, type: 'network' | 'table', state: object): Promise<any> {
     return (await this.axios.updateSession(workspace, sessionId, type, state)).data;
   }
 
