@@ -284,6 +284,10 @@ class MultinetAPI {
   public async getSession(workspace: string, sessionId: number, type: 'network' | 'table'): Promise<any> {
     return (await this.axios.getSession(workspace, sessionId, type)).data;
   }
+
+  public async generateAltText(verbosity: string, level: number, explain: string, data: object, title?: string): Promise<any> {
+    return (await this.axios.generateAltText(verbosity, level, explain, data, title)).data;
+  }
 }
 
 export function multinetApi(baseURL: string): MultinetAPI {

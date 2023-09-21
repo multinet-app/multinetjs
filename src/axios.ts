@@ -73,6 +73,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   updateSession(workspace: string, sessionId: number, type: 'network' | 'table', state: object): AxiosPromise<any>;
   renameSession(workspace: string, sessionId: number, type: 'network' | 'table', name: string): AxiosPromise<any>;
   getSession(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any>;
+  generateAltText(verbosity: string, level: number, explain: string, data: object, title?: string): AxiosPromise<any>;
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
@@ -266,6 +267,24 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
   Proto.getSession = function(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any> {
     return this.get(`workspaces/${workspace}/sessions/${type}/${sessionId}/`);
+  };
+
+  Proto.generateAltText = function(verbosity: string, level: number, explain: string, data: object, title?: string): AxiosPromise<any> {
+    const jsonString = JSON.stringify(data);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const file = new File([blob], 'data.json');
+
+    const formData = new FormData();
+
+    formData.append('verbosity', verbosity);
+    formData.append('level', level.toString());
+    formData.append('explain', explain);
+    formData.append('data', file);
+    if (title) {
+      formData.append('title', title);
+    }
+
+    return this.post(`alttxt/`, formData);
   };
 
   return axiosInstance as MultinetAxiosInstance;
