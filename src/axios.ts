@@ -74,6 +74,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   renameSession(workspace: string, sessionId: number, type: 'network' | 'table', name: string): AxiosPromise<any>;
   getSession(workspace: string, sessionId: number, type: 'network' | 'table'): AxiosPromise<any>;
   generateAltText(verbosity: string, level: number, explain: string, data: object, title?: string): AxiosPromise<any>;
+  networkBuildRequests(workspace: string): AxiosPromise<number[]>;
 }
 
 export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxiosInstance {
@@ -285,6 +286,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     }
 
     return this.post(`alttxt/`, formData);
+  };
+
+  Proto.networkBuildRequests = function(workspace: string): AxiosPromise<number[]> {
+    return this.get(`workspaces/${workspace}/network_build_requests/`);
   };
 
   return axiosInstance as MultinetAxiosInstance;
