@@ -288,6 +288,11 @@ class MultinetAPI {
   public async generateAltText(verbosity: string, level: number, explain: string, data: object, title?: string): Promise<any> {
     return (await this.axios.generateAltText(verbosity, level, explain, data, title)).data;
   }
+
+  public async networkBuildRequests(workspace: string): Promise<number[]> {
+    return (await this.axios.networkBuildRequests(workspace)).data;
+  }
+
 }
 
 export function multinetApi(baseURL: string): MultinetAPI {
