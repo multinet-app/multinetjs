@@ -290,7 +290,7 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
 
   Proto.networkBuildRequests = function(workspace: string): AxiosPromise<number[]> {
     return this.get(`workspaces/${workspace}/network_build_requests/`);
-  }
+  };
 
   return axiosInstance as MultinetAxiosInstance;
 }
