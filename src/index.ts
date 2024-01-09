@@ -285,8 +285,8 @@ class MultinetAPI {
     return (await this.axios.getSession(workspace, sessionId, type)).data;
   }
 
-  public async generateAltText(level: number, structured: boolean, data: object, title?: string): Promise<any> {
-    return (await this.axios.generateAltText(level, structured, data, title)).data;
+  public async generateAltText(structured: boolean, data: object, title?: string, level?: number): Promise<any> {
+    return (await this.axios.generateAltText(structured, data, title, level)).data;
   }
 
   public async networkBuildRequests(workspace: string): Promise<number[]> {
