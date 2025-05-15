@@ -58,6 +58,7 @@ export interface MultinetAxiosInstance extends AxiosInstance {
   networkTables(workspace: string, network: string, type: TableType): AxiosPromise<Table[]>;
   createWorkspace(workspace: string): AxiosPromise<string>;
   deleteWorkspace(workspace: string): AxiosPromise<string>;
+  forkWorkspace(workspace: string): AxiosPromise<Workspace>;
   renameWorkspace(workspace: string, name: string): AxiosPromise<Workspace>;
   uploadTable(workspace: string, table: string, options: TableUploadOptionsSpec, config?: AxiosRequestConfig): AxiosPromise<Array<{}>>;
   deleteTable(workspace: string, table: string): AxiosPromise<string>;
@@ -163,6 +164,10 @@ export function multinetAxiosInstance(config: AxiosRequestConfig): MultinetAxios
     return this.put(`workspaces/${workspace}/`, {
       name,
     });
+  };
+
+  Proto.forkWorkspace = function(workspace: string): AxiosPromise<Workspace> {
+    return this.post(`workspaces/${workspace}/fork/`);
   };
 
   Proto.uploadTable = async function(workspace: string, table: string, options: TableUploadOptionsSpec): Promise<AxiosResponse<Array<{}>>> {
