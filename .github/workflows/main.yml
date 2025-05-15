@@ -16,25 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Set up Node environment
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '10.x'
+          node-version: lts/*
+          cache: 'yarn'
 
-      - name: Restore node_modules cache
-        uses: actions/cache@v1
-        id: multinetjs-cache
-        with:
-          path: /home/runner/work/multinetjs/multinetjs/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('/home/runner/work/multinetjs/multinetjs/yarn.lock') }}-multinetjs-cache
 
       - name: Install yarn packages
-        if: steps.multinetjs-cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --immutable
 
       - name: Run linting test
         run: yarn lint
