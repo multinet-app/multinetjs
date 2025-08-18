@@ -61,6 +61,7 @@ export interface SingleUserWorkspacePermissionSpec {
   workspace: string;
   permission: number | null;
   permission_label: string | null;
+  public: boolean;
 }
 
 export interface WorkspacePermissionsSpec {
